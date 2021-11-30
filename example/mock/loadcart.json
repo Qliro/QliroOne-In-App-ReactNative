@@ -1,0 +1,45 @@
+{
+  "cart": {
+    "id": "604a328979b2e2099407b291",
+    "checkoutId": 3157659,
+    "currency": "SEK",
+    "discount": 0,
+    "products": [
+      {
+        "productId": "5be3114369756e0d0d05a0c1",
+        "quantity": 1,
+        "_id": "61a4fa4b7e8c5e2b54c025ab"
+      },
+      {
+        "productId": "5be311f069756e0d0d05a0c5",
+        "quantity": 1,
+        "_id": "61a4fa4b7e8c5e2b54c025aa"
+      },
+      {
+        "productId": "5be3121569756e0d0d05a0c6",
+        "quantity": 1,
+        "_id": "61a4fa4b7e8c5e2b54c025a9"
+      },
+      {
+        "productId": "5be3123369756e0d0d05a0c7",
+        "quantity": 1,
+        "_id": "61a4fa4b7e8c5e2b54c025a8"
+      }
+    ]
+  },
+  "qliroResponse": {
+    "orderHtmlSnippet": "<script type=\"text/javascript\">(function(w, g) { w[g] = {\r\ncheckoutWebAppBaseUrl: \"https://pago.qit.nu/checkout/webapp/\",\r\ncheckoutWebAppVersion: \"1.74.0\",\r\ncheckoutWebApiBaseUrl: \"https://pago.qit.nu/checkout/webapi/\",\r\nqliroTermsUrl: \"https://assets.qliro.com/terms/se/sv/terms/1/user_terms.pdf\",\r\norderId: \"3157659\",\r\ncountry: \"SE\",\r\nlanguage: \"sv-se\",\r\nauth: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNZXJjaGFudElkIjoiOSIsIk9yZGVySWQiOiIzMTU3NjU5IiwiQ291bnRyeUNvZGUiOiJTRSIsIkN1cnJlbmN5Q29kZSI6IlNFSyIsIkxhbmd1YWdlQ29kZSI6InN2LXNlIiwibmJmIjoxNjM4MjAxOTQ1LCJleHAiOjE2MzgyMDczNDUsImlhdCI6MTYzODIwMTk0NSwiaXNzIjoiUU8ifQ.a-kObhVkuqEQbLGXDNA7X6Sl3VQu6Su8ajEdg3PfUy0\",\r\nmerchantConfirmationUrl: \"https://hats-staging.in.qliro.net/hats/thankyou\",\r\nmerchantTermsUrl: \"https://hats-staging.in.qliro.net/terms\",\r\nmerchantIntegrityPolicyUrl: \"\",\r\nqliroIntegrityPolicyUrl: \"https://assets.qliro.com/terms/se/sv/terms/1/integrity_policy.pdf\",\r\nqliroInvoiceTermsUrl: \"https://assets.qliro.com/terms/se/sv/terms/1/terms_invoice.pdf\",\r\nmerchantGoogleTagManagerId: \"hats-staging\",\r\ngoogleApiKey: \"AIzaSyAkW8LC2HF0pKCph1DxCZpMtkLv5FDnI1Y\",\r\norderPollSetting: [],\r\npaymentStatusPollSetting: [],\r\nstyling: {\r\nprimaryColor: \"#78D5BB\",\r\ncallToActionColor: \"#78D5BB\",\r\nbackgroundColor: \"#FFFFFF\",\r\n},\r\npersonalNumberFormat: {\r\ncanBePresentedWithBirthdayAndLastXCharacters: true,\r\n},\r\npaymentMethodConfig: {\r\ntrustly: {\"visibleBanks\":[\"SWEDBANK\",\"HANDELSBANKEN\",\"NORDEA\",\"SEB\"]},\r\n},\r\ntrackingConfig: {\r\nenableGoogleAnalytics: true,\r\nenableGoogleOptimize: true,\r\nenableNewRelic: true,\r\nenableHotjar: false,\r\n},\r\naddressConfig: {\r\nshowArea: false,\r\nshowStreet2ForPhysical: false,\r\n},\r\n}\r\n})\r\n(window, 'qcoGlobal');</script><div id=\"qliro-root\"></div><script src=\"https://pago.qit.nu/checkout/webapp/bootstrap.js?v=1.74.0_H17l0ZnPzO+4TgMREzg=XX\" async></script>",
+    "orderId": 3157659,
+    "merchantReference": "HATS-5b50-322a-0506-d36a",
+    "totalPrice": 0,
+    "currency": "SEK",
+    "country": "SE",
+    "language": "sv-se",
+    "customerCheckoutStatus": "InProcess",
+    "orderItems": [],
+    "identityVerification": {
+      "requireIdentityVerification": true
+    },
+    "merchantProvidedMetadata": []
+  }
+}
