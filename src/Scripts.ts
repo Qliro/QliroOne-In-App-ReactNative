@@ -82,7 +82,7 @@ export const qliroOneBridge = `
 
 export const onSessionExpiredScript = (insertCallback = true) => {
   const callback = `function callback(order) {
-    sendMessage(JSON.stringify({"name": "onSessionExpired", "data": order}));
+    sendMessage({"name": "onSessionExpired", "data": order});
   }`;
   return `q1.onSessionExpired(${insertCallback ? callback : 'null'});`;
 };
@@ -92,7 +92,7 @@ export const onSessionExpiredScript = (insertCallback = true) => {
  */
 export const orderUpdatedScript = (insertCallback = true) => {
   const callback = `function callback(order) {
-    sendMessage(JSON.stringify({"name": "onOrderUpdated", "data": order}));
+    sendMessage({"name": "onOrderUpdated", "data": order});
   }`;
   return `q1.onOrderUpdated(${insertCallback ? callback : 'null'});`;
 };
