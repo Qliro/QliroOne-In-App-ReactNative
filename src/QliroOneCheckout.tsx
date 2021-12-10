@@ -133,6 +133,17 @@ export class QliroOneCheckout
     console.log('loading req.url :>> ', req.url);
     const elements = req.url.split('/');
     const lastPath = elements[elements.length - 1];
+
+    // WebView
+    if (req.url.includes('pago.qit.nu')) {
+      return true;
+    }
+
+    // Loading initial html
+    if (req.url === 'about:blank') {
+      return true;
+    }
+
     switch (lastPath) {
       case 'app':
         this.redirectToStore();
@@ -145,7 +156,8 @@ export class QliroOneCheckout
       this.redirectToBankId(req.url);
       return false;
     }
-    return true;
+    Linking.openURL(req.url);
+    return false;
   };
 
   // Redirects
