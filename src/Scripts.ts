@@ -32,14 +32,12 @@ const helpers = `
   }
 `;
 
-export const baseScripts = `
-  ${resizeObserver}
-  ${helpers}
-  ${disableZoom}
-`;
-
 export const qliroOneBridge = `
   <script type="text/javascript">
+    ${resizeObserver}
+    ${helpers}
+    ${disableZoom}
+
     window.q1Ready = function(q1) {
       q1.onCheckoutLoaded(function callback() {
           sendMessage({"name": "onCheckoutLoaded"});

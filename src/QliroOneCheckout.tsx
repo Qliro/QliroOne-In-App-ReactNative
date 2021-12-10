@@ -218,7 +218,6 @@ export class QliroOneCheckout
           scrollEnabled={false}
           scalesPageToFit={true}
           onMessage={this.handleMessage}
-          injectedJavaScript={Scripts.baseScripts}
           onShouldStartLoadWithRequest={this.shouldStartLoadingRequest}
           thirdPartyCookiesEnabled={true}
           sharedCookiesEnabled={true}
