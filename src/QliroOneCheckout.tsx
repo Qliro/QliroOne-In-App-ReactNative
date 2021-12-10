@@ -16,6 +16,10 @@ interface Props extends Partial<QliroOneListener>, QliroOneProps {}
 interface State {
   height?: number;
   orderHtml?: string;
+  /**
+   * Used to reload the webview when orderhtml is changed.
+   */
+  reloadCount: number;
 }
 
 export class QliroOneCheckout
@@ -27,13 +31,13 @@ export class QliroOneCheckout
 
   constructor(props: Props) {
     super(props);
-    this.state = { height: undefined };
+    this.state = { height: undefined, reloadCount: 0 };
     this.webViewRef = React.createRef<WebView>();
   }
 
   // QliroOneActions
   loadOrderHtml = (orderHtml: string) => {
-    this.setState({ orderHtml });
+    this.setState({ orderHtml, reloadCount: this.state.reloadCount + 1 });
   };
 
   lock = () => {
@@ -200,6 +204,7 @@ export class QliroOneCheckout
     return (
       <View style={style.wrapper}>
         <WebView
+          key={this.state.reloadCount}
           ref={this.webViewRef}
           style={[style.content, { height: this.state.height ?? '100%' }]}
           containerStyle={style.container}
