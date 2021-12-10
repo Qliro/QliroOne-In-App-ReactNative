@@ -28,4 +28,9 @@ export interface QliroOneActions {
    * @param modules - An array of modules to exclude
    */
   excludeResultModules: (modules: Module[]) => void;
+
+  /**
+   * Load the orderHtmlSnippet returned from the order response.
+   */
+  loadOrderHtml: (url: string) => void;
 }

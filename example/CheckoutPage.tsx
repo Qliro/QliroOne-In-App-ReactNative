@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { QliroOneCheckout } from '../src';
 import { useDispatch, useStore } from './Store';
@@ -14,8 +14,10 @@ export const CheckoutPage = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const store = useStore();
+  const [showProducts, setShowProducts] = useState(true);
   const listRef = useRef<FlatList>(null);
   const checkoutRef = useRef<QliroOneCheckout>(null);
+  const orderHtml = store.qliroResponse?.orderHtmlSnippet;
 
   useEffect(() => {
     const getCheckout = async () => {
@@ -28,6 +30,12 @@ export const CheckoutPage = () => {
     getCheckout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (orderHtml) {
+      checkoutRef.current?.loadOrderHtml(orderHtml);
+    }
+  }, [orderHtml]);
 
   const productsInCart = store.productData?.products.filter(p =>
     store.cart?.products.find(cp => cp.productId === p.id),
@@ -87,8 +95,13 @@ export const CheckoutPage = () => {
   };
 
   const onCheckoutLoaded = () => console.log('onCheckoutLoaded');
-  const onPaymentProcessStart = () => console.log('onPaymentProcessStart');
+  const onPaymentProcessStart = () => {
+    setShowProducts(false);
+    listRef.current?.scrollToOffset({ offset: 0 });
+    console.log('onPaymentProcessStart');
+  };
   const onPaymentProcessEnd = () => {
+    setShowProducts(true);
     console.log('onPaymentProcessEnd');
     listRef.current?.scrollToOffset({ offset: 0 });
   };
@@ -106,7 +119,7 @@ export const CheckoutPage = () => {
       ref={listRef}
       style={style.container}
       ItemSeparatorComponent={() => <View style={style.separator} />}
-      data={productsInCart}
+      data={showProducts ? productsInCart : []}
       renderItem={({ item }) => (
         <ProductItem
           onAddProduct={onAddProduct}
@@ -116,23 +129,20 @@ export const CheckoutPage = () => {
       )}
       ListFooterComponent={
         <SafeAreaView edges={['bottom']}>
-          {store.qliroResponse?.orderHtmlSnippet && (
-            <QliroOneCheckout
-              ref={checkoutRef}
-              orderHtml={store.qliroResponse?.orderHtmlSnippet}
-              onCheckoutLoaded={onCheckoutLoaded}
-              onCustomerInfoChanged={onCustomerInfoChanged}
-              onPaymentMethodChanged={onPaymentMethodChanged}
-              onPaymentProcessStart={onPaymentProcessStart}
-              onPaymentProcessEnd={onPaymentProcessEnd}
-              onShippingMethodChanged={onShippingMethodChanged}
-              onShippingPriceChanged={onShippingPriceChanged}
-              onOrderUpdated={onOrderUpdate}
-              onWillShowSuccess={onWillShowSuccess}
-              onPaymentDeclined={onPaymentDeclined}
-              onCustomerDeauthenticating={onCustomerDeauthenticating}
-            />
-          )}
+          <QliroOneCheckout
+            ref={checkoutRef}
+            onCheckoutLoaded={onCheckoutLoaded}
+            onCustomerInfoChanged={onCustomerInfoChanged}
+            onPaymentMethodChanged={onPaymentMethodChanged}
+            onPaymentProcessStart={onPaymentProcessStart}
+            onPaymentProcessEnd={onPaymentProcessEnd}
+            onShippingMethodChanged={onShippingMethodChanged}
+            onShippingPriceChanged={onShippingPriceChanged}
+            onOrderUpdated={onOrderUpdate}
+            onWillShowSuccess={onWillShowSuccess}
+            onPaymentDeclined={onPaymentDeclined}
+            onCustomerDeauthenticating={onCustomerDeauthenticating}
+          />
         </SafeAreaView>
       }
     />

@@ -15,6 +15,7 @@ interface Props extends Partial<QliroOneListener>, QliroOneProps {}
 
 interface State {
   height?: number;
+  orderHtml?: string;
 }
 
 export class QliroOneCheckout
@@ -31,6 +32,10 @@ export class QliroOneCheckout
   }
 
   // QliroOneActions
+  loadOrderHtml = (orderHtml: string) => {
+    this.setState({ orderHtml });
+  };
+
   lock = () => {
     this.webViewRef.current?.injectJavaScript('q1.lock();');
   };
@@ -149,7 +154,8 @@ export class QliroOneCheckout
         this.redirectToStore();
         return false;
       case 'thankyou':
-        return this.redirectToThankYou();
+        this.redirectToThankYou();
+        return false;
     }
     const host = req.url.split(':')[0];
     if (host === 'bankid') {
@@ -172,13 +178,11 @@ export class QliroOneCheckout
   };
 
   private redirectToThankYou = () => {
-    console.log('THANK YOU');
-    // Nested webviews?
-    // let dontShow = qliroOneListener?.onWillShowSuccess() ?? false
-    // if !dontShow {
-    //     loadOrderHtml(html: self.orderHtml)
-    // }
-    return this.props.onWillShowSuccess?.() ?? false;
+    const dontShow = this.props?.onWillShowSuccess() ?? false;
+    if (dontShow) {
+      return;
+    }
+    this.loadOrderHtml(this.state.orderHtml!);
   };
 
   private redirectToStore = () => {
@@ -201,7 +205,7 @@ export class QliroOneCheckout
           containerStyle={style.container}
           source={{
             html: `
-            ${this.props.orderHtml}
+            ${this.state.orderHtml ?? ''}
             ${Scripts.qliroOneBridge}
           `,
           }}

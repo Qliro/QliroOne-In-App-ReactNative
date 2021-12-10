@@ -16,9 +16,4 @@ export interface QliroOneProps {
    * @returns {boolean} - false if Qliro One should show the default success page, otherwise false
    **/
   onWillShowSuccess: () => boolean;
-
-  /**
-   * The orderHtmlSnippet returned from the order response.
-   */
-  orderHtml: string;
 }
