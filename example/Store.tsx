@@ -26,7 +26,8 @@ const reducer = (state: Store, action: Action): Store => {
     case 'ADD':
       return { ...state, ...action.data };
     case 'CHECKOUT_SUCCESS':
-      return { cart: undefined, qliroResponse: undefined };
+      AsyncStorage.removeItem('cart');
+      return { ...state, cart: undefined, qliroResponse: undefined };
   }
 };
 
