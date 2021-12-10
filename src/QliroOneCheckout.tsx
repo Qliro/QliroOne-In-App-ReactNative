@@ -206,7 +206,12 @@ export class QliroOneCheckout
         <WebView
           key={this.state.reloadCount}
           ref={this.webViewRef}
-          style={[style.content, { height: this.state.height ?? '100%' }]}
+          style={[
+            style.content,
+            {
+              height: this.state.height ?? '100%',
+            },
+          ]}
           containerStyle={style.container}
           source={{
             html: `
@@ -229,6 +234,10 @@ export class QliroOneCheckout
 
 const style = StyleSheet.create({
   wrapper: { height: '100%', width: '100%' },
-  content: { height: '100%', width: '100%' },
-  container: {},
+  content: {
+    backgroundColor: 'transparent',
+    height: '100%',
+    width: '100%',
+  },
+  container: { backgroundColor: 'transparent' },
 });
