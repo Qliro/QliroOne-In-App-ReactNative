@@ -1,4 +1,4 @@
-import { Checkout } from './models';
+import { Checkout, Settings } from './models';
 import { Cart } from './models/Cart';
 import { CartProduct } from './models/CartProduct';
 import { ProductData } from './models/ProductData';
@@ -66,10 +66,9 @@ class Client {
     return data.cart;
   }
 
-  // TODO: What is settings?
-  loadCheckout(cartId: String, settings: any): Promise<Checkout> {
-    // TODO: What is this?
-    settings.availableShippingMethods = true;
+  loadCheckout(cartId: String, settings: Settings): Promise<Checkout> {
+    // TODO: This is default value.
+    settings.settings.availableShippingMethods.value = true;
 
     const body = {
       cartId: cartId,

@@ -4,3 +4,4 @@ export type { CartProduct } from './CartProduct';
 export type { Image } from './Image';
 export type { Product } from './Product';
 export type { ProductData } from './ProductData';
+export type { Settings } from './Settings';
