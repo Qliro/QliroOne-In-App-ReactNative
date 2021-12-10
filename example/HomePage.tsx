@@ -1,6 +1,12 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useLayoutEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { CheckoutButton } from './CheckoutButton';
 import { client } from './Client';
 import { Cart, Product } from './models';
@@ -24,8 +30,13 @@ export const HomePage = () => {
           onPress={() => navigation.navigate('Checkout')}
         />
       ),
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+          <Text>Settings</Text>
+        </TouchableOpacity>
+      ),
     });
-  }, [navigation, count]);
+  }, [navigation, count, dispatch]);
 
   const onCartChanged = async (cart: Cart) => {
     dispatch({ type: 'ADD', data: { ...store, cart } });
