@@ -20,37 +20,15 @@ interface SettingsEntry<T> {
 
 type Types =
   | 'color'
-  | 'color'
   | 'number'
-  | 'number'
-  | 'color'
-  | 'color'
   | 'checkbox'
   | 'dropdown'
-  | 'toggleinput'
-  | 'dropdown'
-  | 'dropdown'
-  | 'toggleinput'
   | 'toggleinput'
   | 'toggleradio'
-  | 'number'
   | 'address'
-  | 'checkbox'
-  | 'checkbox'
-  | 'checkbox'
-  | 'checkbox'
-  | 'checkbox'
-  | 'dropdown'
-  | 'text'
-  | 'text'
-  | 'checkbox'
-  | 'toggleinput'
-  | 'toggleinput'
-  | 'checkbox'
-  | 'checkbox'
   | 'text';
 
-type Keys =
+export type Keys =
   | 'primaryColor'
   | 'callToActionColor'
   | 'callToActionRadius'

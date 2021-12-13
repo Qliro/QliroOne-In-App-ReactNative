@@ -233,7 +233,11 @@ export class QliroOneCheckout
 }
 
 const style = StyleSheet.create({
-  wrapper: { height: '100%', width: '100%' },
+  wrapper: {
+    height: '100%',
+    width: '100%',
+    minHeight: 1,
+  },
   content: {
     backgroundColor: 'transparent',
     height: '100%',

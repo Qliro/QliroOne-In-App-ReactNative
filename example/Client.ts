@@ -66,14 +66,18 @@ class Client {
     return data.cart;
   }
 
-  loadCheckout(cartId: String, settings: Settings): Promise<Checkout> {
+  loadCheckout(
+    cartId: String,
+    settings: Settings['settings'],
+    forceNewOrder = false,
+  ): Promise<Checkout> {
     // TODO: This is default value.
-    settings.settings.availableShippingMethods.value = true;
+    settings.availableShippingMethods.value = true;
 
     const body = {
       cartId: cartId,
       skin: 'store',
-      forceNewOrder: false,
+      forceNewOrder,
       settings: settings,
     };
 
