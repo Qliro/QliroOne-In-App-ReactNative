@@ -9,6 +9,7 @@ import { Order } from '../src/models';
 import { Cart, Product } from './models';
 import { addProductToCart, removeProductFromCart } from './models/Cart';
 import { useNavigation } from '@react-navigation/core';
+import { StackActions } from '@react-navigation/native';
 
 export const CheckoutPage = () => {
   const navigation = useNavigation();
@@ -91,7 +92,8 @@ export const CheckoutPage = () => {
 
   const onWillShowSuccess = () => {
     dispatch({ type: 'CHECKOUT_SUCCESS' });
-    return false;
+    navigation.dispatch(StackActions.replace('ThankYou'));
+    return true;
   };
 
   const onCheckoutLoaded = () => console.log('onCheckoutLoaded');
