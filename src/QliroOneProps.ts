@@ -16,4 +16,9 @@ export interface QliroOneProps {
    * @returns {boolean} - false if Qliro One should show the default success page, otherwise false
    **/
   onWillShowSuccess: () => boolean;
+
+  /**
+   * Sets to enable scroll, otherwise the height will be as tall as required.
+   */
+  scrollEnabled?: boolean;
 }

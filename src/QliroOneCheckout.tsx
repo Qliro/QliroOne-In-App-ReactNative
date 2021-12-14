@@ -216,11 +216,12 @@ export class QliroOneCheckout
           source={{
             html: `
             ${this.state.orderHtml ?? ''}
-            ${Scripts.qliroOneBridge}
+            ${Scripts.qliroOneBridge(this.props.scrollEnabled)}
           `,
           }}
           // TODO: When do we enable scroll? Send all webview props?
-          scrollEnabled={false}
+          scrollEnabled={this.props.scrollEnabled}
+          nestedScrollEnabled={this.props.scrollEnabled}
           scalesPageToFit={true}
           onMessage={this.handleMessage}
           onShouldStartLoadWithRequest={this.shouldStartLoadingRequest}

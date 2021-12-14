@@ -32,9 +32,9 @@ const helpers = `
   }
 `;
 
-export const qliroOneBridge = `
+export const qliroOneBridge = (scrollEnabled?: boolean) => `
   <script type="text/javascript">
-    ${resizeObserver}
+    ${scrollEnabled ? '' : resizeObserver}
     ${helpers}
     ${disableZoom}
 
