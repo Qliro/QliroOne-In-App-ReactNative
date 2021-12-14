@@ -6,29 +6,33 @@ import {
   TouchableOpacity,
   View,
   TextInput,
-  Button,
 } from 'react-native';
 import { Settings, Keys } from './models/Settings';
 import { useDispatch, useStore } from './Store';
 import { client } from './Client';
+import { ToggleInput } from './ToggleInput';
 
-const renderSettings = (currentSettings: Settings['settings']) => {
+const SettingOptions = ({
+  currentSettings,
+}: {
+  currentSettings: Settings['settings'];
+}): JSX.Element => {
   const [settings, setSettings] =
     React.useState<Settings['settings']>(currentSettings);
   const dispatch = useDispatch();
   const store = useStore();
 
-  const onSave = async (settings: Settings['settings']) => {
-    if (!store.cart?.id || !store.productData) return;
+  const onSave = async () => {
+    if (!store.cart?.id || !store.productData) {
+      return;
+    }
     const checkout = await client.loadCheckout(store.cart.id, settings, true);
-    console.log(checkout.qliroResponse?.orderHtmlSnippet);
     dispatch({
       type: 'ADD',
       data: { ...checkout, productData: { ...store.productData, settings } },
     });
   };
 
-  if (!settings) return;
   return (
     <View>
       {Object.keys(settings).map((key, index) => {
@@ -47,9 +51,22 @@ const renderSettings = (currentSettings: Settings['settings']) => {
                 />
               </View>
             );
+          case 'toggleinput':
+            if (['mobileNumber', 'personalNumber'].includes(key)) {
+              return (
+                <ToggleInput
+                  setting={setting}
+                  key={index}
+                  settings={settings}
+                  setSettings={setSettings}
+                />
+              );
+            } else {
+              return null;
+            }
         }
       })}
-      <TouchableOpacity style={style.button} onPress={() => onSave(settings)}>
+      <TouchableOpacity style={style.button} onPress={onSave}>
         <Text style={style.touchable}>Save</Text>
       </TouchableOpacity>
     </View>
@@ -63,14 +80,12 @@ export const SettingsPage = () => {
 
   return (
     <ScrollView style={style.container}>
-      <Text selectable>070-4581515</Text>
-      <Text selectable>780709-8889</Text>
       <TouchableOpacity
         style={style.button}
         onPress={() => dispatch({ type: 'CHECKOUT_SUCCESS' })}>
         <Text style={style.touchable}>Remove cart</Text>
       </TouchableOpacity>
-      {settings && renderSettings(settings)}
+      {settings && <SettingOptions currentSettings={settings} />}
     </ScrollView>
   );
 };
@@ -88,9 +103,10 @@ const style = StyleSheet.create({
     paddingVertical: 8,
     width: '100%',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   textInput: {
-    minWidth: 70,
+    minWidth: 90,
     borderColor: 'black',
     borderRadius: 4,
     borderWidth: 1,

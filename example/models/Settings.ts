@@ -7,7 +7,7 @@ export interface Settings {
   forceNewOrder: boolean;
 }
 
-interface SettingsEntry<T> {
+export interface SettingsEntry<T> {
   _id: string;
   name: Keys;
   type: Types;
@@ -16,7 +16,10 @@ interface SettingsEntry<T> {
   values: T[];
   defaultValue: T;
   value: T;
+  defaultValues: { [key in Language]: T };
 }
+
+type Language = 'NO' | 'SE';
 
 type Types =
   | 'color'
