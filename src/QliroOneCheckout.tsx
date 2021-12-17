@@ -220,8 +220,8 @@ export class QliroOneCheckout
           `,
           }}
           // TODO: When do we enable scroll? Send all webview props?
-          scrollEnabled={this.props.scrollEnabled}
-          nestedScrollEnabled={this.props.scrollEnabled}
+          scrollEnabled={!!this.props.scrollEnabled}
+          nestedScrollEnabled={!!this.props.scrollEnabled}
           scalesPageToFit={true}
           onMessage={this.handleMessage}
           onShouldStartLoadWithRequest={this.shouldStartLoadingRequest}

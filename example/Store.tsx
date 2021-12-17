@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { QliroResponse } from '../src/models';
-import { Cart, ProductData } from './models';
+import { Cart, ProductData, Layout } from './models';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { client } from './Client';
 import { useAppState } from './Helpers';
@@ -16,6 +16,7 @@ interface Store {
   cart?: Cart;
   qliroResponse?: QliroResponse;
   productData?: ProductData;
+  checkoutLayout?: Layout;
 }
 
 type Action = { type: 'ADD'; data: Store } | { type: 'CHECKOUT_SUCCESS' };
@@ -65,6 +66,7 @@ export const StoreProvider = ({ children }: { children: any }) => {
         const store: Store = {
           productData,
           cart,
+          checkoutLayout: 'oneScrollView',
         };
         dispatch({ type: 'ADD', data: store });
         setReady(true);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, ViewStyle } from 'react-native';
 import { QliroOneCheckout } from '../src';
 import { useDispatch, useStore } from './Store';
 import { ProductItem } from './ProductItem';
@@ -116,10 +116,36 @@ export const CheckoutPage = () => {
   const onCustomerDeauthenticating = () =>
     console.log('onCustomerDeauthenticating');
 
-  return (
+  const qliroCheckout = (scrollEnabled: boolean, style?: ViewStyle) => (
+    <SafeAreaView edges={['bottom']} style={style}>
+      <QliroOneCheckout
+        ref={checkoutRef}
+        onCheckoutLoaded={onCheckoutLoaded}
+        onCustomerInfoChanged={onCustomerInfoChanged}
+        onPaymentMethodChanged={onPaymentMethodChanged}
+        onPaymentProcessStart={onPaymentProcessStart}
+        onPaymentProcessEnd={onPaymentProcessEnd}
+        onShippingMethodChanged={onShippingMethodChanged}
+        onShippingPriceChanged={onShippingPriceChanged}
+        onOrderUpdated={onOrderUpdate}
+        onWillShowSuccess={onWillShowSuccess}
+        onPaymentDeclined={onPaymentDeclined}
+        onCustomerDeauthenticating={onCustomerDeauthenticating}
+        scrollEnabled={scrollEnabled}
+      />
+    </SafeAreaView>
+  );
+
+  const orderItems = ({
+    additionalStyle,
+    listFooterComponent,
+  }: {
+    additionalStyle?: ViewStyle;
+    listFooterComponent?: JSX.Element;
+  }) => (
     <FlatList
       ref={listRef}
-      style={style.container}
+      style={[style.container, additionalStyle]}
       ItemSeparatorComponent={() => <View style={style.separator} />}
       data={showProducts ? productsInCart : []}
       renderItem={({ item }) => (
@@ -129,26 +155,28 @@ export const CheckoutPage = () => {
           product={item}
         />
       )}
-      ListFooterComponent={
-        <SafeAreaView edges={['bottom']}>
-          <QliroOneCheckout
-            ref={checkoutRef}
-            onCheckoutLoaded={onCheckoutLoaded}
-            onCustomerInfoChanged={onCustomerInfoChanged}
-            onPaymentMethodChanged={onPaymentMethodChanged}
-            onPaymentProcessStart={onPaymentProcessStart}
-            onPaymentProcessEnd={onPaymentProcessEnd}
-            onShippingMethodChanged={onShippingMethodChanged}
-            onShippingPriceChanged={onShippingPriceChanged}
-            onOrderUpdated={onOrderUpdate}
-            onWillShowSuccess={onWillShowSuccess}
-            onPaymentDeclined={onPaymentDeclined}
-            onCustomerDeauthenticating={onCustomerDeauthenticating}
-          />
-        </SafeAreaView>
-      }
+      ListFooterComponent={listFooterComponent}
     />
   );
+
+  const layouts = {
+    oneScrollView: orderItems({
+      listFooterComponent: qliroCheckout(false),
+    }),
+    twoScrollView: (
+      <View style={{ height: '100%' }}>
+        {orderItems({ additionalStyle: { height: '50%' } })}
+        {qliroCheckout(true, {
+          height: '50%',
+          backgroundColor: 'white',
+          borderTopColor: 'lightgrey',
+          borderTopWidth: 1,
+        })}
+      </View>
+    ),
+  };
+
+  return layouts[store.checkoutLayout || 'oneScrollView'];
 };
 
 const style = StyleSheet.create({
@@ -157,5 +185,5 @@ const style = StyleSheet.create({
     width: '100%',
     color: 'gray',
   },
-  container: { flexGrow: 1, backgroundColor: 'white' },
+  container: { flex: 1, backgroundColor: 'white' },
 });

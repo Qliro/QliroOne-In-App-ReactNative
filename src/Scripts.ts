@@ -6,23 +6,37 @@ const disableZoom = `
   head.appendChild(meta);
 `;
 
-// TODO: Resize Observer API compatibility
-// request animation frame with reference to the query?
+const ifResizeObserverUnSupported = `
+  let previousHeight;
+  const root = document.querySelector('body > div');
+  setInterval(function findDialogBox() {
+    var height = Math.max( root.scrollHeight, root.offsetHeight );
+    if(previousHeight != height) {
+      sendMessage({"name": "onClientHeightChange", data: height});
+      previousHeight = height
+    }
+  }, 100)
+`;
+
 const resizeObserver = `
   let previous;
   // create an Observer instance
-  const resizeObserver = new ResizeObserver(function(entries) { 
-    const height = entries[entries.length - 1].target.clientHeight;
-    if (height != previous) {
-      sendMessage({"name": "onClientHeightChange", "data": height});
-      previous = height;
-    }
-  });
+  try {
+    const resizeObserver = new ResizeObserver(function(entries) {
+      const height = entries[entries.length - 1].target.clientHeight;
+      if (height != previous) {
+        sendMessage({"name": "onClientHeightChange", "data": height});
+        previous = height;
+      }
+    });
 
-  const root = document.querySelector('body > div');
-  if (root) {
-    // start observing a DOM node
-    resizeObserver.observe(root);
+    const root = document.querySelector('body > div');
+    if (root) {
+      // start observing a DOM node
+      resizeObserver.observe(root);
+    }
+  } catch (e) {
+    ${ifResizeObserverUnSupported}
   }
 `;
 

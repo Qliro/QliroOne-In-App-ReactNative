@@ -7,7 +7,7 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import { Settings, Keys } from './models/Settings';
+import { Settings, Keys, LayoutTypes } from './models/Settings';
 import { useDispatch, useStore } from './Store';
 import { client } from './Client';
 import { ToggleInput } from './ToggleInput';
@@ -86,6 +86,26 @@ export const SettingsPage = () => {
         <Text style={style.touchable}>Remove cart</Text>
       </TouchableOpacity>
       {settings && <SettingOptions currentSettings={settings} />}
+      <View style={style.settingContainer}>
+        <Text>Layout: </Text>
+        {LayoutTypes.map(layout => {
+          return (
+            <TouchableOpacity
+              key={layout}
+              onPress={() => {
+                dispatch({
+                  type: 'ADD',
+                  data: { ...store, checkoutLayout: layout },
+                });
+              }}>
+              <Text
+                style={store.checkoutLayout === layout ? style.active : null}>
+                {layout}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </ScrollView>
   );
 };
@@ -111,5 +131,8 @@ const style = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     padding: 2,
+  },
+  active: {
+    color: '#5fdba7',
   },
 });

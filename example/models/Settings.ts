@@ -62,3 +62,6 @@ export type Keys =
   | 'hideQliroOneInitially'
   | 'overwriteOnSessionExpired'
   | 'organizationNumber';
+
+export const LayoutTypes = ['oneScrollView', 'twoScrollView'] as const;
+export type Layout = typeof LayoutTypes[number];
