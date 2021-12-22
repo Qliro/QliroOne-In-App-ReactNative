@@ -1,5 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import React from 'react';
 import { CheckoutPage } from './CheckoutPage';
 import { HomePage } from './HomePage';
@@ -20,11 +23,14 @@ declare global {
 }
 
 const Stack = createNativeStackNavigator<RootStackParameters>();
+const defaultOptions: NativeStackNavigationOptions = {
+  headerTitleAlign: 'center',
+};
 
 export const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={defaultOptions}>
         <Stack.Screen name="Home" component={HomePage} />
         <Stack.Screen name="Checkout" component={CheckoutPage} />
         <Stack.Screen name="Settings" component={SettingsPage} />

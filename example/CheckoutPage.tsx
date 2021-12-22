@@ -164,16 +164,12 @@ export const CheckoutPage = () => {
       listFooterComponent: qliroCheckout(false),
     }),
     twoScrollView: (
-      <View style={{ height: '100%' }}>
-        {orderItems({ additionalStyle: { height: '50%' } })}
-        {qliroCheckout(true, {
-          height: '50%',
-          backgroundColor: 'white',
-          borderTopColor: 'lightgrey',
-          borderTopWidth: 1,
-        })}
+      <View style={style.twoScrollWrapper}>
+        {orderItems({ additionalStyle: style.twoScrollWrapper })}
+        {qliroCheckout(true, style.twoScrollCheckout)}
       </View>
     ),
+    fullscreen: qliroCheckout(true, style.fullscreenCheckout),
   };
 
   return layouts[store.checkoutLayout || 'oneScrollView'];
@@ -186,4 +182,13 @@ const style = StyleSheet.create({
     color: 'gray',
   },
   container: { flex: 1, backgroundColor: 'white' },
+  twoScrollWrapper: { flex: 1 },
+  twoScrollItemsWrapper: { height: '50%' },
+  twoScrollCheckout: {
+    height: '50%',
+    backgroundColor: 'white',
+    borderTopColor: 'lightgrey',
+    borderTopWidth: 1,
+  },
+  fullscreenCheckout: { backgroundColor: 'white' },
 });

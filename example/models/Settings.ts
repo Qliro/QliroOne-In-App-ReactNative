@@ -63,5 +63,9 @@ export type Keys =
   | 'overwriteOnSessionExpired'
   | 'organizationNumber';
 
-export const LayoutTypes = ['oneScrollView', 'twoScrollView'] as const;
+export const LayoutTypes = [
+  'oneScrollView',
+  'twoScrollView',
+  'fullscreen',
+] as const;
 export type Layout = typeof LayoutTypes[number];
