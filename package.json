@@ -47,5 +47,6 @@
       "json",
       "node"
     ]
-  }
+  },
+  "types": "./src/QliroOneCheckout"
 }
