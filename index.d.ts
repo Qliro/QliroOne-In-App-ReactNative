@@ -1,0 +1,1 @@
+export { QliroOneCheckout } from './src';
