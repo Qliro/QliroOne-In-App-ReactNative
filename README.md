@@ -31,6 +31,7 @@ const CheckoutPage = () => {
     console.log(`onPaymentDeclined: ${r}`);
   const onCustomerDeauthenticating = () =>
     console.log('onCustomerDeauthenticating');
+  const onLogged = (message: string) => console.log(`onLogged: ${message}`);
 
   return (
     <View>
@@ -48,6 +49,7 @@ const CheckoutPage = () => {
         onPaymentDeclined={onPaymentDeclined}
         onCustomerDeauthenticating={onCustomerDeauthenticating}
         scrollEnabled={scrollEnabled}
+        onLogged={onLogged}
       />
     </View>
   );
@@ -58,23 +60,4 @@ More information about these callbacks can be found in the [developer portal](ht
 
 ## Example App
 
-### Setup
-
-run `yarn` to install all dependencies
-
-Before running iOS, also run the following:
-`cd ios && pod install && ..`
-
-### Both iOS and Android
-
-Start the javascript bundler and keep it running:
-
-`yarn start`
-
-To run iOS:
-
-`yarn ios`
-
-To run Android:
-
-`yarn android`
+See [Example apps README](./example/README.md) for information about the example app.

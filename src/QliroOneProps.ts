@@ -21,4 +21,10 @@ export interface QliroOneProps {
    * Sets to enable scroll, otherwise the height will be as tall as required.
    */
   scrollEnabled?: boolean;
+
+  /**
+   * Called when something is logged
+   * @param message - The message to be logged
+   */
+  onLogged?: (message: string) => void;
 }

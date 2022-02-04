@@ -93,7 +93,7 @@ export class QliroOneCheckout
   // WebView JavaScript messages
   private handleMessage = (event: WebViewMessageEvent) => {
     const eventData: QliroOneEvent = JSON.parse(event.nativeEvent.data);
-    console.log('eventData :>> ', eventData);
+    this.props.onLogged?.(JSON.stringify(eventData));
     switch (eventData.name) {
       case 'onClientHeightChange':
         this.setState({ height: eventData.data });
@@ -139,7 +139,6 @@ export class QliroOneCheckout
   // Navigation
 
   private shouldStartLoadingRequest = (req: ShouldStartLoadRequest) => {
-    console.log('loading req.url :>> ', req.url);
     const elements = req.url.split('/');
     const lastPath = elements[elements.length - 1];
 
@@ -174,7 +173,6 @@ export class QliroOneCheckout
 
   // TODO: redirect?
   private redirectToBankId = (url: string) => {
-    console.log('BANKID REDIRECT :>> ', url);
     if (!url.includes('redirect=')) {
       url += '&redirect=null';
     }
@@ -190,7 +188,6 @@ export class QliroOneCheckout
   };
 
   private redirectToStore = () => {
-    console.log('STORE');
     if (Platform.OS === 'android') {
       Linking.openURL('market://details?id=com.qliro.qliro');
     } else {

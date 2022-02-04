@@ -115,6 +115,7 @@ export const CheckoutPage = () => {
     console.log(`onPaymentDeclined: ${r}`);
   const onCustomerDeauthenticating = () =>
     console.log('onCustomerDeauthenticating');
+  const onLogged = (message: string) => console.log(`onLogged: ${message}`);
 
   const qliroCheckout = (scrollEnabled: boolean, style?: ViewStyle) => (
     <SafeAreaView edges={['bottom']} style={style}>
@@ -132,6 +133,7 @@ export const CheckoutPage = () => {
         onPaymentDeclined={onPaymentDeclined}
         onCustomerDeauthenticating={onCustomerDeauthenticating}
         scrollEnabled={scrollEnabled}
+        onLogged={onLogged}
       />
     </SafeAreaView>
   );

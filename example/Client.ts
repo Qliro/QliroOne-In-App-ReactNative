@@ -5,11 +5,11 @@ import { ProductData } from './models/ProductData';
 
 class Client {
   private get baseUrl(): string {
-    return 'https://hats-staging.in.qliro.net/api';
+    return 'https://CHANGE_ME';
   }
 
   private get token(): string {
-    return 'ZGVtb3VzZXI6RGVtb0BVc2VyQDEyMzQ1';
+    return 'XXXXXXXXX';
   }
 
   private async request<T = any>(url: string, params: any = {}): Promise<T> {
