@@ -1,5 +1,5 @@
 import { Cart } from '.';
-import { QliroResponse } from '../../src/models';
+import { QliroResponse } from 'qliroone_reactnative';
 
 export interface Checkout {
   cart: Cart;

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View, ViewStyle } from 'react-native';
-import { QliroOneCheckout } from '../src';
+import { QliroOneCheckout, Order } from 'qliroone_reactnative';
 import { useDispatch, useStore } from './Store';
 import { ProductItem } from './ProductItem';
 import { client } from './Client';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Order } from '../src/models';
 import { Cart, Product } from './models';
 import { addProductToCart, removeProductFromCart } from './models/Cart';
 import { useNavigation } from '@react-navigation/core';

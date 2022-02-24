@@ -5,7 +5,7 @@ import React, {
   useReducer,
   useState,
 } from 'react';
-import { QliroResponse } from '../src/models';
+import { QliroResponse } from 'qliroone_reactnative';
 import { Cart, ProductData, Layout } from './models';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { client } from './Client';

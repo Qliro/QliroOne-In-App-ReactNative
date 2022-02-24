@@ -1,9 +1,4 @@
-/**
- * @format
- */
+import { QliroOneCheckout } from './src/QliroOneCheckout';
 
-import { AppRegistry } from 'react-native';
-import App from './example/App';
-import { name as appName } from './app.json';
-
-AppRegistry.registerComponent(appName, () => App);
+export { QliroOneCheckout };
+export default QliroOneCheckout;

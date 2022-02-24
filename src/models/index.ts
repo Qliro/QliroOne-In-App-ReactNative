@@ -1,5 +1,4 @@
 export type { Address } from './Address';
-export type { Checkout } from './Checkout';
 export type { Customer } from './Customer';
 export type { Module } from './Module';
 export type { Order } from './Order';
