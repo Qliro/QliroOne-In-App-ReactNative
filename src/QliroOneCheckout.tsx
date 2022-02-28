@@ -1,5 +1,13 @@
 import React from 'react';
-import { Linking, Platform, StyleSheet, View } from 'react-native';
+import {
+  Linking,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  StyleSheet,
+  View,
+  Dimensions,
+} from 'react-native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import {
@@ -28,11 +36,15 @@ export class QliroOneCheckout
 {
   private webViewRef: React.RefObject<WebView<{}>>;
   private currentSessionExpiredCallback?: () => void;
+  private viewRef: React.RefObject<View>;
+  private screenHeight: number;
 
   constructor(props: Props) {
     super(props);
     this.state = { height: undefined, reloadCount: 0 };
     this.webViewRef = React.createRef<WebView>();
+    this.viewRef = React.createRef<View>();
+    this.screenHeight = Dimensions.get('screen').height;
   }
 
   // QliroOneActions
@@ -56,6 +68,15 @@ export class QliroOneCheckout
   updateOrders = () => {
     this.addOrderUpdateCallback();
     this.lock();
+  };
+
+  onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    this.viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
+      this.webViewRef.current?.injectJavaScript(`
+        window.dispatchEvent(new CustomEvent("scroll", { detail:  { customHeight: ${this.screenHeight}, customTop: ${pageY} }}));
+        true;
+      `);
+    });
   };
 
   // TODO: Should this be a prop instead?
@@ -199,7 +220,7 @@ export class QliroOneCheckout
 
   render() {
     return (
-      <View style={style.wrapper}>
+      <View style={style.wrapper} ref={this.viewRef}>
         <WebView
           key={this.state.reloadCount}
           ref={this.webViewRef}

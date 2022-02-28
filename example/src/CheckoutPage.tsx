@@ -98,13 +98,11 @@ export const CheckoutPage = () => {
   const onCheckoutLoaded = () => console.log('onCheckoutLoaded');
   const onPaymentProcessStart = () => {
     setShowProducts(false);
-    listRef.current?.scrollToOffset({ offset: 0 });
     console.log('onPaymentProcessStart');
   };
   const onPaymentProcessEnd = () => {
     setShowProducts(true);
     console.log('onPaymentProcessEnd');
-    listRef.current?.scrollToOffset({ offset: 0 });
   };
   const onCustomerInfoChanged = () => console.log('onCustomerInfoChanged');
   const onPaymentMethodChanged = () => console.log('onPaymentMethodChanged');
@@ -146,6 +144,7 @@ export const CheckoutPage = () => {
   }) => (
     <FlatList
       ref={listRef}
+      onScroll={event => checkoutRef.current?.onScroll(event)}
       style={[style.container, additionalStyle]}
       ItemSeparatorComponent={() => <View style={style.separator} />}
       data={showProducts ? productsInCart : []}

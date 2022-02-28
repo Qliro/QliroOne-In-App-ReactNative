@@ -1,3 +1,4 @@
+import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { Module } from './models/Module';
 
 export interface QliroOneActions {
@@ -33,4 +34,9 @@ export interface QliroOneActions {
    * Load the orderHtmlSnippet returned from the order response.
    */
   loadOrderHtml: (url: string) => void;
+
+  /**
+   * If the component is rendered inside a scrollview this function should be called on when scrolling in the view to ensure the popups get postioned correctly
+   */
+  onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
