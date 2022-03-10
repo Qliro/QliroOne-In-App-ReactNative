@@ -18,9 +18,8 @@ const CheckoutPage = () => {
     console.log('onOrderUpdated');
     return true;
   };
-  const onWillShowSuccess = () => {
-    console.log('onWillShowSuccess');
-    return false;
+  const onCompletePurchaseRedirect = () => {
+    // Do some navigation
   };
   const onCheckoutLoaded = () => console.log('onCheckoutLoaded');
   const onPaymentProcessStart = () => console.log('onPaymentProcessStart');
@@ -38,6 +37,7 @@ const CheckoutPage = () => {
   return (
     <View>
       <QliroOneCheckout
+        orderHtml={orderHtml}
         ref={checkoutRef}
         onCheckoutLoaded={onCheckoutLoaded}
         onCustomerInfoChanged={onCustomerInfoChanged}
@@ -47,11 +47,12 @@ const CheckoutPage = () => {
         onShippingMethodChanged={onShippingMethodChanged}
         onShippingPriceChanged={onShippingPriceChanged}
         onOrderUpdated={onOrderUpdate}
-        onWillShowSuccess={onWillShowSuccess}
+        onCompletePurchaseRedirect={onCompletePurchaseRedirect}
         onPaymentDeclined={onPaymentDeclined}
         onCustomerDeauthenticating={onCustomerDeauthenticating}
         scrollEnabled={scrollEnabled}
         onLogged={onLogged}
+        redirectToSuccess={false}
       />
     </View>
   );
