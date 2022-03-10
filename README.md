@@ -1,5 +1,7 @@
 ## Usage
 
+Add the react-native-webview package `npm install --save react-native-webview` or `yarn add react-native-webview`
+
 Import the `QliroOneCheckout` component from `qliroone_reactnative` and use it like:
 
 ```jsx
