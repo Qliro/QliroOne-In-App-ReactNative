@@ -108,3 +108,15 @@ export const orderUpdatedScript = (insertCallback = true) => {
   }`;
   return `q1.onOrderUpdated(${insertCallback ? callback : 'null'});`;
 };
+
+/**
+ * Attach this script in order to listen on the redirect event after a completed purchase.
+ * @param redirect if true, the application will redirect you
+ */
+export const onCompletePurchaseRedirect = (redirect: boolean) => {
+  const callback = `function callback(redirect) {
+    ${redirect ? 'redirect();' : ''}
+    sendMessage({"name": "onCompletePurchaseRedirect"});
+  }`;
+  return `q1.onCompletePurchaseRedirect(${callback}, false);`;
+};

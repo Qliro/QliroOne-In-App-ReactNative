@@ -89,10 +89,9 @@ export const CheckoutPage = () => {
     return cartQuantity === orderQuantity;
   };
 
-  const onWillShowSuccess = () => {
+  const onCompletePurchaseRedirect = () => {
     dispatch({ type: 'CHECKOUT_SUCCESS' });
     navigation.dispatch(StackActions.replace('ThankYou'));
-    return true;
   };
 
   const onCheckoutLoaded = () => console.log('onCheckoutLoaded');
@@ -126,11 +125,12 @@ export const CheckoutPage = () => {
         onShippingMethodChanged={onShippingMethodChanged}
         onShippingPriceChanged={onShippingPriceChanged}
         onOrderUpdated={onOrderUpdate}
-        onWillShowSuccess={onWillShowSuccess}
+        onCompletePurchaseRedirect={onCompletePurchaseRedirect}
         onPaymentDeclined={onPaymentDeclined}
         onCustomerDeauthenticating={onCustomerDeauthenticating}
         scrollEnabled={scrollEnabled}
         onLogged={onLogged}
+        redirectToSuccess={false}
       />
     </SafeAreaView>
   );

@@ -12,10 +12,15 @@ export interface QliroOneProps {
 
   /**
    * Called when Qliro is about to show the success page after a successful payment.
-   * Return true to stop Qliro from showing the success page and let the receiver handle it.
-   * @returns {boolean} - false if Qliro One should show the default success page, otherwise false
    **/
-  onWillShowSuccess: () => boolean;
+  onCompletePurchaseRedirect?: () => void;
+
+  /**
+   * set to true if Qliro One should show the default success page
+   * if false you can handle this yourself with a callback @see onWillShowSuccess
+   * defaults to true.
+   **/
+  redirectToSuccess?: boolean;
 
   /**
    * Sets to enable scroll, otherwise the height will be as tall as required.

@@ -14,4 +14,5 @@ export type QliroOneEvent =
   | { name: 'onClientHeightChange'; data: number }
   | { name: 'onQliroOneReady' }
   | { name: 'onCheckoutLoaded' }
-  | { name: 'onOrderUpdated'; data: Order };
+  | { name: 'onOrderUpdated'; data: Order }
+  | { name: 'onCompletePurchaseRedirect' };

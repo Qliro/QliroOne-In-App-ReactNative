@@ -120,6 +120,11 @@ export class QliroOneCheckout
         this.setState({ height: eventData.data });
         break;
       case 'onQliroOneReady':
+        this.webViewRef.current?.injectJavaScript(
+          Scripts.onCompletePurchaseRedirect(
+            this.props.redirectToSuccess ?? true,
+          ),
+        );
         break;
       case 'onCheckoutLoaded':
         this.props.onCheckoutLoaded?.();
@@ -154,6 +159,9 @@ export class QliroOneCheckout
       case 'onSessionExpired':
         this.currentSessionExpiredCallback?.();
         break;
+      case 'onCompletePurchaseRedirect':
+        this.props.onCompletePurchaseRedirect?.();
+        break;
     }
   };
 
@@ -177,9 +185,6 @@ export class QliroOneCheckout
       case 'app':
         this.redirectToStore();
         return false;
-      case 'thankyou':
-        this.redirectToThankYou();
-        return false;
     }
     const host = req.url.split(':')[0];
     if (host === 'bankid') {
@@ -198,14 +203,6 @@ export class QliroOneCheckout
       url += '&redirect=null';
     }
     Linking.openURL(url);
-  };
-
-  private redirectToThankYou = () => {
-    const dontShow = this.props?.onWillShowSuccess() ?? false;
-    if (dontShow) {
-      return;
-    }
-    this.loadOrderHtml(this.state.orderHtml!);
   };
 
   private redirectToStore = () => {
@@ -237,7 +234,6 @@ export class QliroOneCheckout
             ${Scripts.qliroOneBridge(this.props.scrollEnabled)}
           `,
           }}
-          // TODO: When do we enable scroll? Send all webview props?
           scrollEnabled={!!this.props.scrollEnabled}
           nestedScrollEnabled={!!this.props.scrollEnabled}
           scalesPageToFit={true}
