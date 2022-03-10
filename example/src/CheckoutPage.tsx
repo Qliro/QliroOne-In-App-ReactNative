@@ -31,12 +31,6 @@ export const CheckoutPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (orderHtml) {
-      checkoutRef.current?.loadOrderHtml(orderHtml);
-    }
-  }, [orderHtml]);
-
   const productsInCart = store.productData?.products.filter(p =>
     store.cart?.products.find(cp => cp.productId === p.id),
   );
@@ -116,6 +110,7 @@ export const CheckoutPage = () => {
   const qliroCheckout = (scrollEnabled: boolean, style?: ViewStyle) => (
     <SafeAreaView edges={['bottom']} style={style}>
       <QliroOneCheckout
+        orderHtml={orderHtml}
         ref={checkoutRef}
         onCheckoutLoaded={onCheckoutLoaded}
         onCustomerInfoChanged={onCustomerInfoChanged}
@@ -144,7 +139,7 @@ export const CheckoutPage = () => {
   }) => (
     <FlatList
       ref={listRef}
-      onScroll={event => checkoutRef.current?.onScroll(event)}
+      onScroll={checkoutRef.current?.onScroll}
       style={[style.container, additionalStyle]}
       ItemSeparatorComponent={() => <View style={style.separator} />}
       data={showProducts ? productsInCart : []}

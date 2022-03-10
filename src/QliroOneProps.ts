@@ -2,6 +2,11 @@ import { Order } from './models';
 
 export interface QliroOneProps {
   /**
+   * orderHtmlSnippet returned from the order response used to load the checkout.
+   */
+  orderHtml: string | undefined;
+
+  /**
    * Called when Qliro One has synced its orders.
    * This might be called multiple times and should return true when
    * the Qliro One and the app is in sync. Returning true will unlock the Checkout.

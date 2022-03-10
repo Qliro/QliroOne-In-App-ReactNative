@@ -47,11 +47,20 @@ export class QliroOneCheckout
     this.screenHeight = Dimensions.get('screen').height;
   }
 
-  // QliroOneActions
-  loadOrderHtml = (orderHtml: string) => {
-    this.setState({ orderHtml, reloadCount: this.state.reloadCount + 1 });
-  };
+  static getDerivedStateFromProps(
+    nextProps: Props,
+    prevState: State,
+  ): State | null {
+    if (nextProps.orderHtml !== prevState.orderHtml) {
+      return {
+        orderHtml: nextProps.orderHtml,
+        reloadCount: prevState.reloadCount + 1,
+      };
+    }
+    return null;
+  }
 
+  // QliroOneActions
   lock = () => {
     this.webViewRef.current?.injectJavaScript('q1.lock();');
   };
@@ -70,7 +79,7 @@ export class QliroOneCheckout
     this.lock();
   };
 
-  onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  onScroll = (_: NativeSyntheticEvent<NativeScrollEvent>) => {
     this.viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
       this.webViewRef.current?.injectJavaScript(`
         window.dispatchEvent(new CustomEvent("scroll", { detail:  { customHeight: ${this.screenHeight}, customTop: ${pageY} }}));

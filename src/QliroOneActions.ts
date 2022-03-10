@@ -31,11 +31,6 @@ export interface QliroOneActions {
   excludeResultModules: (modules: Module[]) => void;
 
   /**
-   * Load the orderHtmlSnippet returned from the order response.
-   */
-  loadOrderHtml: (url: string) => void;
-
-  /**
    * If the component is rendered inside a scrollview this function should be called on when scrolling in the view to ensure the popups get postioned correctly
    */
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
