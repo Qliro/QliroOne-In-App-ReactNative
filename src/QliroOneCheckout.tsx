@@ -37,14 +37,14 @@ export class QliroOneCheckout
   private webViewRef: React.RefObject<WebView<{}>>;
   private currentSessionExpiredCallback?: () => void;
   private viewRef: React.RefObject<View>;
-  private screenHeight: number;
+  private scrollThrottled: boolean;
 
   constructor(props: Props) {
     super(props);
     this.state = { height: undefined, reloadCount: 0 };
     this.webViewRef = React.createRef<WebView>();
     this.viewRef = React.createRef<View>();
-    this.screenHeight = Dimensions.get('screen').height;
+    this.scrollThrottled = false;
   }
 
   static getDerivedStateFromProps(
@@ -80,12 +80,17 @@ export class QliroOneCheckout
   };
 
   onScroll = (_: NativeSyntheticEvent<NativeScrollEvent>) => {
-    this.viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
-      this.webViewRef.current?.injectJavaScript(`
-        window.dispatchEvent(new CustomEvent("scroll", { detail:  { customHeight: ${this.screenHeight}, customTop: ${pageY} }}));
+    if (!this.scrollThrottled) {
+      const screenHeight = Dimensions.get('screen').height;
+      this.viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        this.webViewRef.current?.injectJavaScript(`
+        window.dispatchEvent(new CustomEvent("scroll", { detail:  { customHeight: ${screenHeight}, customTop: ${pageY} }}));
         true;
       `);
-    });
+      });
+      this.scrollThrottled = true;
+      setTimeout(() => (this.scrollThrottled = false), 250);
+    }
   };
 
   // TODO: Should this be a prop instead?
