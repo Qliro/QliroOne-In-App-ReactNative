@@ -125,7 +125,6 @@ export const CheckoutPage = () => {
         onCustomerDeauthenticating={onCustomerDeauthenticating}
         scrollEnabled={scrollEnabled}
         onLogged={onLogged}
-        redirectToSuccess={false}
       />
     </SafeAreaView>
   );

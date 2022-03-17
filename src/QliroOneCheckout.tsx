@@ -136,7 +136,7 @@ export class QliroOneCheckout
       case 'onQliroOneReady':
         this.webViewRef.current?.injectJavaScript(
           Scripts.onCompletePurchaseRedirect(
-            this.props.redirectToSuccess ?? true,
+            !this.props.onCompletePurchaseRedirect,
           ),
         );
         break;
@@ -249,7 +249,6 @@ export class QliroOneCheckout
           `,
           }}
           scrollEnabled={!!this.props.scrollEnabled}
-          nestedScrollEnabled={!!this.props.scrollEnabled}
           scalesPageToFit={true}
           onMessage={this.handleMessage}
           onShouldStartLoadWithRequest={this.shouldStartLoadingRequest}
