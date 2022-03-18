@@ -111,12 +111,10 @@ export const orderUpdatedScript = (insertCallback = true) => {
 
 /**
  * Attach this script in order to listen on the redirect event after a completed purchase.
- * @param redirect if true, the application will redirect you
  */
-export const onCompletePurchaseRedirect = (redirect: boolean) => {
+export const onCompletePurchaseRedirect = () => {
   const callback = `function callback(redirect) {
-    ${redirect ? 'redirect();' : ''}
-    sendMessage({"name": "onCompletePurchaseRedirect"});
+    sendMessage({ "name": "onCompletePurchaseRedirect", "data": window.qcoGlobal.merchantConfirmationUrl });
   }`;
   return `q1.onCompletePurchaseRedirect(${callback}, false);`;
 };

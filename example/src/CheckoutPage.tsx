@@ -83,9 +83,9 @@ export const CheckoutPage = () => {
     return cartQuantity === orderQuantity;
   };
 
-  const onCompletePurchaseRedirect = () => {
+  const onCompletePurchaseRedirect = (successUrl: string) => {
     dispatch({ type: 'CHECKOUT_SUCCESS' });
-    navigation.dispatch(StackActions.replace('ThankYou'));
+    navigation.dispatch(StackActions.replace('ThankYou', { successUrl }));
   };
 
   const onCheckoutLoaded = () => console.log('onCheckoutLoaded');
@@ -138,6 +138,7 @@ export const CheckoutPage = () => {
   }) => (
     <FlatList
       ref={listRef}
+      scrollEventThrottle={500}
       onScroll={checkoutRef.current?.onScroll}
       style={[style.container, additionalStyle]}
       ItemSeparatorComponent={() => <View style={style.separator} />}

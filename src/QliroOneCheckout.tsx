@@ -9,7 +9,10 @@ import {
   Dimensions,
 } from 'react-native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
-import { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
+import {
+  ShouldStartLoadRequest,
+  WebViewSource,
+} from 'react-native-webview/lib/WebViewTypes';
 import {
   Module,
   QliroOneActions,
@@ -28,6 +31,7 @@ interface State {
    * Used to reload the webview when orderhtml is changed.
    */
   reloadCount: number;
+  successUrl?: string;
 }
 
 export class QliroOneCheckout
@@ -135,9 +139,7 @@ export class QliroOneCheckout
         break;
       case 'onQliroOneReady':
         this.webViewRef.current?.injectJavaScript(
-          Scripts.onCompletePurchaseRedirect(
-            !this.props.onCompletePurchaseRedirect,
-          ),
+          Scripts.onCompletePurchaseRedirect(),
         );
         break;
       case 'onCheckoutLoaded':
@@ -174,12 +176,20 @@ export class QliroOneCheckout
         this.currentSessionExpiredCallback?.();
         break;
       case 'onCompletePurchaseRedirect':
-        this.props.onCompletePurchaseRedirect?.();
+        if (this.props.onCompletePurchaseRedirect) {
+          this.props.onCompletePurchaseRedirect(eventData.data);
+        } else {
+          this.loadSuccessUrl(eventData.data);
+        }
         break;
     }
   };
 
   // Navigation
+
+  private loadSuccessUrl = (successUrl: string) => {
+    this.setState({ successUrl });
+  };
 
   private shouldStartLoadingRequest = (req: ShouldStartLoadRequest) => {
     const elements = req.url.split('/');
@@ -192,6 +202,10 @@ export class QliroOneCheckout
 
     // Loading initial html
     if (req.url === 'about:blank') {
+      return true;
+    }
+
+    if (req.url === this.state.successUrl) {
       return true;
     }
 
@@ -230,6 +244,18 @@ export class QliroOneCheckout
   };
 
   render() {
+    let source: WebViewSource | undefined;
+    if (this.state.successUrl) {
+      source = { uri: this.state.successUrl };
+    } else if (this.state.orderHtml) {
+      source = {
+        html: `
+          ${this.state.orderHtml}
+          ${Scripts.qliroOneBridge(this.props.scrollEnabled)}
+        `,
+      };
+    }
+
     return (
       <View style={style.wrapper} ref={this.viewRef}>
         <WebView
@@ -242,12 +268,7 @@ export class QliroOneCheckout
             },
           ]}
           containerStyle={style.container}
-          source={{
-            html: `
-            ${this.state.orderHtml ?? ''}
-            ${Scripts.qliroOneBridge(this.props.scrollEnabled)}
-          `,
-          }}
+          source={source}
           scrollEnabled={!!this.props.scrollEnabled}
           scalesPageToFit={true}
           onMessage={this.handleMessage}

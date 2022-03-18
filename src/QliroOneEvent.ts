@@ -15,4 +15,4 @@ export type QliroOneEvent =
   | { name: 'onQliroOneReady' }
   | { name: 'onCheckoutLoaded' }
   | { name: 'onOrderUpdated'; data: Order }
-  | { name: 'onCompletePurchaseRedirect' };
+  | { name: 'onCompletePurchaseRedirect'; data: string };
