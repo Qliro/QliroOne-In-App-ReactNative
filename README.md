@@ -1,14 +1,12 @@
-## What does QliroOneCheckout offer?
+# QliroOne Checkout
+
+## What does QliroOne Checkout offer?
 
 This package wraps QliroOne Checkout and exposes its functionality as a React Native component.
 
 ## Getting started
 
-Add the react-native-webview package `npm install --save react-native-webview` or `yarn add react-native-webview`
-
-### iOS
-
-Go to `[Your porject]/ios` and run `pod install`
+To get started you need to install [React Native WebView](https://github.com/react-native-webview/react-native-webview).
 
 ## Usage
 
@@ -162,7 +160,3 @@ Example:
 ```
 
 More information about these callbacks can be found in the [developer portal](https://developers.qliro.com/docs/qliro-one).
-
-## Example App
-
-See [Example apps README](./example/README.md) for information about the example app.
