@@ -62,12 +62,12 @@ const CheckoutPage = () => {
 - [onPaymentProcessEnd](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onpaymentprocess()>)
 - [onShippingMethodChanged](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onshippingmethodchanged()>)
 - [onShippingPriceChanged](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onshippingpricechanged()>)
-- [onOrderUpdated](https://developers.qliro.com/docs/qliro-one/checkout-features/update-order)
 
 ### SDK Specific Event props
 
 - [onLogged](#onLogged)
 - [onCompletePurchaseRedirect](#onCompletePurchaseRedirect)
+- [onOrderUpdated](#onOrderUpdate)
 
 ### Checkout Actions
 
@@ -106,6 +106,38 @@ Example:
   // ...
   // ...
 />
+```
+
+#### onOrderUpdated
+
+Called after the updateOrders action has been called when Qliro One has synced its orders.
+This might be called multiple times and should return true when the Qliro One and the app is in sync.
+Returning true will unlock the Checkout, stopping the callback to be called again.
+
+Example:
+
+```jsx
+const onCartChanged = async cart => {
+  // Lock interaction while fetching
+  checkoutRef.current?.lock();
+  const updatedCart = await client.updateCart(cart.id, cart.products);
+  // Make sure that Qliro one is up to date with your update
+  checkoutRef.current?.updateOrders();
+};
+
+const onOrderUpdated = (order: Order) => {
+  // Check that the order is synced with your order.
+  const orderCorrect = localCart.products === order.orderItems;
+  return orderCorrect;
+};
+
+// ...
+<QliroOneCheckout
+  onOrderUpdated={onOrderUpdated}
+  // ...
+  // ...
+  // ...
+/>;
 ```
 
 #### onCompletePurchaseRedirect

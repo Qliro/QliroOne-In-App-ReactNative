@@ -7,7 +7,7 @@ export interface QliroOneProps {
   orderHtml: string | undefined;
 
   /**
-   * Called when Qliro One has synced its orders.
+   * Called after the updateOrders action has been called when Qliro One has synced its orders.
    * This might be called multiple times and should return true when
    * the Qliro One and the app is in sync. Returning true will unlock the Checkout.
    * @param order - The order
