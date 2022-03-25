@@ -73,12 +73,12 @@ const CheckoutPage = () => {
 
 - [lock](https://developers.qliro.com/docs/qliro-one/checkout-features/update-order)
 - [unlock](https://developers.qliro.com/docs/qliro-one/checkout-features/update-order)
-- [updateOrders](https://developers.qliro.com/docs/qliro-one/checkout-features/update-order)
 - [enableScrolling](https://developers.qliro.com/docs/qliro-one/frontend-features/enable-scrolling)
 - [excludeResultModules](https://developers.qliro.com/docs/qliro-one/customization/thank-you-page-customize#how-to)
 
 ### SDK Specific Actions
 
+- [updateOrders](https://developers.qliro.com/docs/qliro-one/checkout-features/update-order)
 - [onScroll](#onScroll)
 
 ### Configurable props
@@ -93,38 +93,15 @@ Sets to enable scroll, default is false. If scrolling is disabled the component 
 
 ### SDK Specific Event props
 
-#### onLogged
-
-Callback function that is called when something is logged.
-
-Example:
-
-```jsx
-<QliroOneCheckout
-  onLogged={message => console.log(message)}
-  // ...
-  // ...
-  // ...
-/>
-```
-
 #### onOrderUpdated
 
-Called after the updateOrders action has been called when Qliro One has synced its orders.
+Called after the ´updateOrders´ action has been called when Qliro One has synced its orders.
 This might be called multiple times and should return true when the Qliro One and the app is in sync.
 Returning true will unlock the Checkout, stopping the callback to be called again.
 
 Example:
 
 ```jsx
-const onCartChanged = async cart => {
-  // Lock interaction while fetching
-  checkoutRef.current?.lock();
-  const updatedCart = await client.updateCart(cart.id, cart.products);
-  // Make sure that Qliro one is up to date with your update
-  checkoutRef.current?.updateOrders();
-};
-
 const onOrderUpdated = (order: Order) => {
   // Check that the order is synced with your order.
   const orderCorrect = localCart.products === order.orderItems;
@@ -158,7 +135,39 @@ Example:
 />
 ```
 
+#### onLogged
+
+Callback function that is called when something is logged.
+
+Example:
+
+```jsx
+<QliroOneCheckout
+  onLogged={message => console.log(message)}
+  // ...
+  // ...
+  // ...
+/>
+```
+
 ### SDK Specific Actions
+
+#### updateOrders
+
+Initiates the order sync process. The frontend application is locked and user interaction is disabled until
+the return value of the ´onOrderUpdated´ callback function isUpdated is truthy.
+
+Example:
+
+```jsx
+const onCartChanged = async cart => {
+  // Lock interaction while fetching
+  checkoutRef.current?.lock();
+  const updatedCart = await client.updateCart(cart.id, cart.products);
+  // Make sure that Qliro one is up to date with your update
+  checkoutRef.current?.updateOrders();
+};
+```
 
 #### onScroll
 
