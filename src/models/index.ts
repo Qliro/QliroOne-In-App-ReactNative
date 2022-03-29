@@ -9,3 +9,4 @@ export type { QliroOneEvent } from '../QliroOneEvent';
 export type { QliroOneListener } from '../QliroOneListener';
 export type { QliroResponse } from './QliroResponse';
 export type { Shipping } from './Shipping';
+export type { PurchaseRedirectOptions } from './PurchaseRedirectOptions';

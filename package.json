@@ -1,15 +1,15 @@
 {
   "name": "qliroone_reactnative",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "QliroOne SDK",
   "main": "index.js",
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-native": "^0.66.2",
-    "react-native-webview": "^11.14.2"
+    "react": "*",
+    "react-native": "*",
+    "react-native-webview": "*"
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^2.0.0",

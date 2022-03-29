@@ -12,7 +12,7 @@ const ifResizeObserverUnSupported = `
   setInterval(function findDialogBox() {
     var height = Math.max( root.scrollHeight, root.offsetHeight );
     if(previousHeight != height) {
-      sendMessage({"name": "onClientHeightChange", data: height});
+      sendMessage({"name": "onClientHeightChange", "data": { height }});
       previousHeight = height
     }
   }, 100)
@@ -25,7 +25,7 @@ const resizeObserver = `
     const resizeObserver = new ResizeObserver(function(entries) {
       const height = entries[entries.length - 1].target.clientHeight;
       if (height != previous) {
-        sendMessage({"name": "onClientHeightChange", "data": height});
+        sendMessage({"name": "onClientHeightChange", "data": { height }});
         previous = height;
       }
     });
@@ -54,37 +54,37 @@ export const qliroOneBridge = (scrollEnabled?: boolean) => `
 
     window.q1Ready = function(q1) {
       q1.onCheckoutLoaded(function callback() {
-          sendMessage({"name": "onCheckoutLoaded"});
+          sendMessage({"name": "onCheckoutLoaded", "data": { arguments: [...arguments] }});
       });
 
-      q1.onPaymentMethodChanged(function callback(paymentMethod) {
-          sendMessage({"name": "onPaymentMethodChanged", "data": paymentMethod});
+      q1.onPaymentMethodChanged(function callback() {
+          sendMessage({"name": "onPaymentMethodChanged", "data": { arguments: [...arguments] }});
       });
 
       q1.onPaymentProcess(function start() {
-          sendMessage({"name": "onPaymentProcessStart"});
+          sendMessage({"name": "onPaymentProcessStart", "data": { arguments: [...arguments] }});
       }, function end() {
-          sendMessage({"name": "onPaymentProcessEnd"});
+          sendMessage({"name": "onPaymentProcessEnd", "data": { arguments: [...arguments] }});
       });
 
-      q1.onShippingMethodChanged(function callback(shipping) {
-          sendMessage({"name": "onShippingMethodChanged", "data": shipping});
+      q1.onShippingMethodChanged(function callback(arg) {
+          sendMessage({"name": "onShippingMethodChanged", "data": { arguments: [...arguments] }});
       });
 
-      q1.onShippingPriceChanged(function callback(price) {
-          sendMessage({"name": "onShippingPriceChanged", "data": price});
+      q1.onShippingPriceChanged(function callback() {
+          sendMessage({"name": "onShippingPriceChanged", "data": { arguments: [...arguments] }});
       });
 
-      q1.onCustomerInfoChanged(function callback(customer) {
-          sendMessage({"name": "onCustomerInfoChanged", "data": customer});
+      q1.onCustomerInfoChanged(function callback() {
+          sendMessage({"name": "onCustomerInfoChanged", "data": { arguments: [...arguments] }});
       });
 
       q1.onCustomerDeauthenticating(function callback() {
-        sendMessage({"name": "onCustomerDeauthenticating"});
+        sendMessage({"name": "onCustomerDeauthenticating", "data": { arguments: [...arguments] }});
       });
 
-      q1.onPaymentDeclined(function callback(declineReason) {
-        sendMessage({"name": "onPaymentDeclined", "data": declineReason});
+      q1.onPaymentDeclined(function callback() {
+        sendMessage({"name": "onPaymentDeclined", "data": { arguments: [...arguments] }});
       });
 
       sendMessage({"name": "onQliroOneReady"});
@@ -93,8 +93,8 @@ export const qliroOneBridge = (scrollEnabled?: boolean) => `
 `;
 
 export const onSessionExpiredScript = (insertCallback = true) => {
-  const callback = `function callback(order) {
-    sendMessage({"name": "onSessionExpired", "data": order});
+  const callback = `function callback() {
+    sendMessage({"name": "onSessionExpired", "data": { arguments: [...arguments] }});
   }`;
   return `q1.onSessionExpired(${insertCallback ? callback : 'null'});`;
 };
@@ -103,18 +103,19 @@ export const onSessionExpiredScript = (insertCallback = true) => {
  * Attach this script in order to listen on changes to the order.
  */
 export const orderUpdatedScript = (insertCallback = true) => {
-  const callback = `function callback(order) {
-    sendMessage({"name": "onOrderUpdated", "data": order});
+  const callback = `function callback() {
+    sendMessage({"name": "onOrderUpdated", "data": { arguments: [...arguments] }});
   }`;
   return `q1.onOrderUpdated(${insertCallback ? callback : 'null'});`;
 };
 
 /**
  * Attach this script in order to listen on the redirect event after a completed purchase.
+ * We split the arguments as the first argument is the redirect callback.
  */
 export const onCompletePurchaseRedirect = () => {
   const callback = `function callback(redirect) {
-    sendMessage({ "name": "onCompletePurchaseRedirect", "data": window.qcoGlobal.merchantConfirmationUrl });
+    sendMessage({ "name": "onCompletePurchaseRedirect", "data": { arguments: [...arguments].slice(1) } });
   }`;
   return `q1.onCompletePurchaseRedirect(${callback}, false);`;
 };

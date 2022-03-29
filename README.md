@@ -62,6 +62,7 @@ const CheckoutPage = () => {
 - [onPaymentProcessEnd](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onpaymentprocess()>)
 - [onShippingMethodChanged](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onshippingmethodchanged()>)
 - [onShippingPriceChanged](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onshippingpricechanged()>)
+- [onSessionExpired](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onsessionexpired()>)
 
 ### SDK Specific Event props
 
@@ -119,16 +120,21 @@ const onOrderUpdated = (order: Order) => {
 
 #### onCompletePurchaseRedirect
 
-A callback called when a purchase has been completed. The successUrl you created in the createCart will be provided in this callback.
+A callback called when a purchase has been completed. The successUrl you created in the createCart will be provided in this callback in
+an object as merchantConfirmationUrl: { merchantConfirmationUrl: string }
 
 Example:
 
 ```jsx
 <QliroOneCheckout
   // ...
-  onCompletePurchaseRedirect={successUrl => {
+  onCompletePurchaseRedirect={options => {
     dispatch({ type: 'CHECKOUT_SUCCESS' });
-    navigation.dispatch(StackActions.replace('ThankYou', { successUrl }));
+    navigation.dispatch(
+      StackActions.replace('ThankYou', {
+        successUrl: options.merchantConfirmationUrl,
+      }),
+    );
   }}
   // ...
   // ...

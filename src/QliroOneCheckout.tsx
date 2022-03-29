@@ -15,6 +15,7 @@ import {
 } from 'react-native-webview/lib/WebViewTypes';
 import {
   Module,
+  PurchaseRedirectOptions,
   QliroOneActions,
   QliroOneEvent,
   QliroOneListener,
@@ -39,7 +40,7 @@ export class QliroOneCheckout
   implements QliroOneActions
 {
   private webViewRef: React.RefObject<WebView<{}>>;
-  private currentSessionExpiredCallback?: () => void;
+  private currentSessionExpiredCallback?: (...args: any[]) => void;
   private viewRef: React.RefObject<View>;
   private scrollThrottled: boolean;
 
@@ -106,7 +107,7 @@ export class QliroOneCheckout
   };
 
   // TODO: Should this be a prop instead?
-  setSessionExpiredCallback = (callback?: () => void) => {
+  setSessionExpiredCallback = (callback?: (...args: any[]) => void) => {
     this.currentSessionExpiredCallback = callback;
     if (callback) {
       this.webViewRef.current?.injectJavaScript(
@@ -132,10 +133,12 @@ export class QliroOneCheckout
   // WebView JavaScript messages
   private handleMessage = (event: WebViewMessageEvent) => {
     const eventData: QliroOneEvent = JSON.parse(event.nativeEvent.data);
-    this.props.onLogged?.(JSON.stringify(eventData));
+    if (eventData.name !== 'onClientHeightChange') {
+      this.props.onLogged?.(JSON.stringify(eventData));
+    }
     switch (eventData.name) {
       case 'onClientHeightChange':
-        this.setState({ height: eventData.data });
+        this.setState({ height: eventData.data.height });
         break;
       case 'onQliroOneReady':
         this.webViewRef.current?.injectJavaScript(
@@ -143,43 +146,78 @@ export class QliroOneCheckout
         );
         break;
       case 'onCheckoutLoaded':
-        this.props.onCheckoutLoaded?.();
+        this.props.onCheckoutLoaded?.(...eventData.data.arguments);
+        break;
+      case 'onCustomerDeauthenticating':
+        this.props.onCustomerDeauthenticating?.(...eventData.data.arguments);
+        break;
+      case 'onPaymentDeclined':
+        const declineReason = eventData.data.arguments[0];
+        const declineReasonMessage = eventData.data.arguments[1];
+        this.props.onPaymentDeclined?.(
+          declineReason,
+          declineReasonMessage,
+          ...eventData.data.arguments.slice(2),
+        );
         break;
       case 'onPaymentMethodChanged':
-        this.props.onPaymentMethodChanged?.(eventData.data);
+        this.props.onPaymentMethodChanged?.(
+          eventData.data.arguments[0],
+          ...eventData.data.arguments.slice(1),
+        );
         break;
       case 'onPaymentProcessStart':
-        this.props.onPaymentProcessStart?.();
+        this.props.onPaymentProcessStart?.(...eventData.data.arguments);
         break;
       case 'onPaymentProcessEnd':
-        this.props.onPaymentProcessEnd?.();
+        this.props.onPaymentProcessEnd?.(...eventData.data.arguments);
         break;
       case 'onShippingMethodChanged':
-        this.props.onShippingMethodChanged?.(eventData.data);
+        const shipping = eventData.data.arguments[0];
+        this.props.onShippingMethodChanged?.(
+          shipping,
+          ...eventData.data.arguments.slice(1),
+        );
         break;
       case 'onShippingPriceChanged':
         if (eventData.data) {
-          this.props.onShippingPriceChanged?.(eventData.data);
+          const newShippingPrice = eventData.data.arguments[0];
+          const newTotalShippingPrice = eventData.data.arguments[1];
+          this.props.onShippingPriceChanged?.(
+            newShippingPrice,
+            newTotalShippingPrice,
+            ...eventData.data.arguments.slice(2),
+          );
         }
         break;
       case 'onCustomerInfoChanged':
-        this.props.onCustomerInfoChanged?.(eventData.data);
+        const customer = eventData.data.arguments[0];
+        this.props.onCustomerInfoChanged?.(
+          customer,
+          ...eventData.data.arguments.slice(1),
+        );
         break;
       case 'onOrderUpdated':
-        const unlock = this.props.onOrderUpdated?.(eventData.data) ?? true;
+        const order = eventData.data.arguments[0];
+        const unlock =
+          this.props.onOrderUpdated?.(
+            order,
+            ...eventData.data.arguments.slice(1),
+          ) ?? true;
         if (unlock) {
           this.removeOrderUpdateCallback();
           this.unlock();
         }
         break;
       case 'onSessionExpired':
-        this.currentSessionExpiredCallback?.();
+        this.currentSessionExpiredCallback?.(...eventData.data.arguments);
         break;
       case 'onCompletePurchaseRedirect':
+        const data: PurchaseRedirectOptions = eventData.data.arguments[0];
         if (this.props.onCompletePurchaseRedirect) {
-          this.props.onCompletePurchaseRedirect(eventData.data);
+          this.props.onCompletePurchaseRedirect(data);
         } else {
-          this.loadSuccessUrl(eventData.data);
+          this.loadSuccessUrl(data.merchantConfirmationUrl);
         }
         break;
     }
