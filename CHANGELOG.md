@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.4] - 2022-04-08
+
+### Changed
+
+- Simplify the way of loading urls from qliroone by checking navigationtype
+- Update shipping and payment method types to reflect [documentation](https://developers.qliro.com/docs/qliro-one/frontend-features/listeners)
+
 ## [0.0.3] - 2022-03-29
 
 ### Changed
