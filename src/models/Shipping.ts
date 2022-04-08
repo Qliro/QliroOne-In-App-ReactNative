@@ -1,7 +1,7 @@
 export interface Shipping {
   method: string;
-  secondaryOption: string;
-  additionalShippingServices: string[];
+  secondaryOption: string | null;
+  additionalShippingServices: string[] | null;
   price: number;
   priceExVat: number;
   totalShippingPrice: number;
