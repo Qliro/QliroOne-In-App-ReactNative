@@ -14,7 +14,7 @@ export interface QliroOneProps {
    * @param rest - Possible extra arguments not yet supported by SDK types. [Read more]{@link https://developers.qliro.com/docs/qliro-one/checkout-features/update-order}
    * @returns {boolean} - true if the order is successfully synced otherwise false
    **/
-  onOrderUpdated: (order: Order, ...rest: any[]) => boolean;
+  onOrderUpdated?: (order: Order, ...rest: any[]) => boolean;
 
   /**
    * Called when Qliro is about to show the success page after a successful payment.
