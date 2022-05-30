@@ -7,6 +7,12 @@ export interface QliroOneProps {
   orderHtml: string | undefined;
 
   /**
+   * baseUrl is used in order to identify the main frame's origin in a trustworthy way,
+   * you need to provide a valid HTTP or HTTPS base URL to set the origin.
+   */
+  baseUrl?: string;
+
+  /**
    * Called after the updateOrders action has been called when Qliro One has synced its orders.
    * This might be called multiple times and should return true when
    * the Qliro One and the app is in sync. Returning true will unlock the Checkout.

@@ -280,6 +280,7 @@ export class QliroOneCheckout
           ${this.state.orderHtml}
           ${Scripts.qliroOneBridge(this.props.scrollEnabled)}
         `,
+        baseUrl: this.props.baseUrl ?? 'https://payments.qliro.com',
       };
     }
 

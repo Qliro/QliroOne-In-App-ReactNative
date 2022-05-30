@@ -1,6 +1,6 @@
 {
   "name": "qliroone_reactnative",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "QliroOne SDK",
   "main": "index.js",
   "scripts": {
