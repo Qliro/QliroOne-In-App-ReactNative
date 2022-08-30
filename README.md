@@ -6,7 +6,13 @@ This package wraps QliroOne Checkout and exposes its functionality as a React Na
 
 ## Getting started
 
-To get started you need to install [React Native WebView](https://github.com/react-native-webview/react-native-webview).
+### iOS
+
+Run `pod install`.
+
+### Amdroid
+
+TBD - not implemented yet.
 
 ## Usage
 
@@ -37,8 +43,9 @@ const CheckoutPage = () => {
         onOrderUpdated={() => {}}
         onCompletePurchaseRedirect={() => {}}
         onPaymentDeclined={() => {}}
+        onSessionExpired={() => {}}
         onCustomerDeauthenticating={() => {}}
-        scrollEnabled={scrollEnabled}
+        isScrollEnabled={scrollEnabled}
         onLogged={onLogged}
       />
     </View>
@@ -94,25 +101,43 @@ Sets to enable scroll, default is false. If scrolling is disabled the component 
 
 ### SDK Specific Event props
 
+#### locked
+
+The frontend application is locked and user interaction is disabled until locked is false again.
+
 #### onOrderUpdated
 
 Called after the ´updateOrders´ action has been called when Qliro One has synced its orders.
 This might be called multiple times and should return true when the Qliro One and the app is in sync.
-Returning true will unlock the Checkout, stopping the callback to be called again.
+Once the order change can be validated, call removeOrderUpdateCallback and unset the locked property in order for the customer to interact with the checkout again.
 
 Example:
 
 ```jsx
+const checkoutRef = useRef<QliroOneCheckout>(null);
+const [locked, setLocked] = useState(false)
+
+const onCartChanged = async () => {
+  setLocked(true);
+  /// ...
+  const updatedCart = await ...
+  /// ...
+  checkoutRef.current?.addOrderUpdateCallback();
+}
+
 const onOrderUpdated = (order: Order) => {
   // Check that the order is synced with your order.
   const orderCorrect = localCart.products === order.orderItems;
-  return orderCorrect;
+  if (orderCorrect) {
+    checkoutRef.current?.removeOrderUpdateCallback();
+  }
 };
 
 // ...
 <QliroOneCheckout
   onOrderUpdated={onOrderUpdated}
   // ...
+  locked={locked}
   // ...
   // ...
 />;
@@ -158,22 +183,11 @@ Example:
 
 ### SDK Specific Actions
 
-#### updateOrders
+#### addOrderUpdateCallback and removeOrderUpdateCallback
 
-Initiates the order sync process. The frontend application is locked and user interaction is disabled until
-the return value of the ´onOrderUpdated´ callback function isUpdated is truthy.
+Initiates and removes the order sync process. 
 
-Example:
-
-```jsx
-const onCartChanged = async cart => {
-  // Lock interaction while fetching
-  checkoutRef.current?.lock();
-  const updatedCart = await client.updateCart(cart.id, cart.products);
-  // Make sure that Qliro one is up to date with your update
-  checkoutRef.current?.updateOrders();
-};
-```
+See `onOrderUpdated`
 
 #### onScroll
 

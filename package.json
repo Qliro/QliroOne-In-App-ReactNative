@@ -1,21 +1,49 @@
 {
   "name": "qliroone_reactnative",
+  "title": "React Native Qliro One",
   "version": "0.0.6",
-  "description": "QliroOne SDK",
+  "description": "TODO",
   "main": "index.js",
+  "typings": "index.d.ts",
+  "files": [
+    "android",
+    "index.js",
+    "index.d.ts",
+    "ios",
+    "lib",
+    "qliroone_reactnative.podspec"
+  ],
   "scripts": {
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "ios": "react-native run-ios --project-path example/ios",
+    "build": "tsc",
+    "prepare": "yarn tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/github_account/qliroone_reactnative.git",
+    "baseUrl": "https://github.com/github_account/qliroone_reactnative"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Your Name",
+    "email": "yourname@email.com"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "react-native-webview": "*"
+    "react": ">=16.8.1",
+    "react-native": ">=0.60.0-rc.0 <1.0.x"
   },
   "devDependencies": {
-    "@react-native-community/eslint-config": "^2.0.0",
-    "@types/react": "^17",
-    "@types/react-native": "^0.65.0",
-    "eslint": "^7.14.0",
-    "typescript": "^3.8.3"
+    "@react-native-community/eslint-config": "^3.0.3",
+    "@types/react": "^18.0.14",
+    "@types/react-native": "^0.69.2",
+    "eslint": "^8.19.0",
+    "react": "^16.9.0",
+    "react-native": "^0.61.5",
+    "typescript": "^4.7.4"
   }
 }
