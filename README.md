@@ -6,22 +6,18 @@ This package wraps QliroOne Checkout and exposes its functionality as a React Na
 
 ## Getting started
 
-### iOS
+### Pod install
 
-Run `pod install`.
-
-### Amdroid
-
-TBD - not implemented yet.
+Run `cd ios && pod install`.
 
 ## Usage
 
 Import the `QliroOneCheckout` component from `qliroone_reactnative` and use it like:
 
 ```jsx
-import React from 'react';
-import { View } from 'react-native';
-import { QliroOneCheckout } from 'qliroone_reactnative';
+import React from "react";
+import { View } from "react-native";
+import { QliroOneCheckout } from "qliroone_reactnative";
 
 // ...
 
@@ -153,12 +149,12 @@ Example:
 ```jsx
 <QliroOneCheckout
   // ...
-  onCompletePurchaseRedirect={options => {
-    dispatch({ type: 'CHECKOUT_SUCCESS' });
+  onCompletePurchaseRedirect={(options) => {
+    dispatch({ type: "CHECKOUT_SUCCESS" });
     navigation.dispatch(
-      StackActions.replace('ThankYou', {
+      StackActions.replace("ThankYou", {
         successUrl: options.merchantConfirmationUrl,
-      }),
+      })
     );
   }}
   // ...
@@ -174,7 +170,7 @@ Example:
 
 ```jsx
 <QliroOneCheckout
-  onLogged={message => console.log(message)}
+  onLogged={(message) => console.log(message)}
   // ...
   // ...
   // ...
@@ -185,7 +181,7 @@ Example:
 
 #### addOrderUpdateCallback and removeOrderUpdateCallback
 
-Initiates and removes the order sync process. 
+Initiates and removes the order sync process.
 
 See `onOrderUpdated`
 

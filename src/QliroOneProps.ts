@@ -13,7 +13,7 @@ export interface QliroOneProps {
   isScrollEnabled?: boolean;
 
   /**
-   * Lock the Qliro One frontend and disable user interaction. 
+   * Lock the Qliro One frontend and disable user interaction.
    */
   locked?: boolean;
 

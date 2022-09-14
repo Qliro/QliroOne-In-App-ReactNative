@@ -103,8 +103,10 @@ export const QliroOneCheckout = forwardRef<
     }
   }, [checkoutLoaded, props.onSessionExpired]);
 
+  // collapsable set to false to make viewRef.current.measure work on android
+  // https://github.com/facebook/react-native/issues/3282
   return (
-    <View ref={viewRef}>
+    <View ref={viewRef} collapsable={false}>
       <NativeQliroOneCheckout
         ref={checkoutRef}
         {...props}
@@ -117,7 +119,9 @@ export const QliroOneCheckout = forwardRef<
   );
 });
 
-class NativeQliroOneCheckout extends React.Component<QliroOneListener> {
+class NativeQliroOneCheckout extends React.Component<
+  QliroOneListener & QliroOneProps
+> {
   webViewRef = React.createRef<NativeCheckoutIOS>();
 
   private getCommands() {
@@ -212,6 +216,7 @@ class NativeQliroOneCheckout extends React.Component<QliroOneListener> {
   render() {
     return (
       <QlirOneNativeCheckout
+        {...this.props}
         ref={this.webViewRef}
         onCheckoutLoaded={() => {
           return this.props.onCheckoutLoaded?.();
