@@ -5,7 +5,7 @@
 //  Created by Elliot Rask on 2022-07-03.
 //
 
-#import "RCTViewManager.h"
+#import <React/RCTViewManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
