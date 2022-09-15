@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2022-09-15
+
+### Changed
+- `lock` and `unlock` functions in the QliroOneCheckout is now a property called `locked`
+- `updateOrders` function has been removed and is now `addOrderUpdateCallback` and `removeOrderUpdateCallback` to follow the conventions of the web implementation.
+- The webview is now built custom in separate Android and iOS packages. React Native Webview is not used anymore.
+- Updated the README with new changes for native packages.
+- Removed baseurl parameter
+
 ## [0.0.6] - 2022-05-30
 
 ### Added
@@ -44,3 +53,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added missing [onCustomerDeauthenticating listener](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#oncustomerdeauthenticating()>)
 - Added declineReasonMessage to [onPaymentDeclined listener](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onpaymentdeclined()>)
 - Added newTotalShippingPrice to [onShippingPriceChanged listener](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onshippingpricechanged()>)
+

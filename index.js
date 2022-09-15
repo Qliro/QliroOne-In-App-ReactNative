@@ -1,4 +1,4 @@
-import { QliroOneCheckout } from './src/QliroOneCheckout';
+import { QliroOneCheckout } from './lib/QliroOneCheckout';
 
 export { QliroOneCheckout };
 export default QliroOneCheckout;
