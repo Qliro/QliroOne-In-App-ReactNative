@@ -7,12 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2022-09-15
+
 ### Changed
 - `lock` and `unlock` functions in the QliroOneCheckout is now a property called `locked`
 - `updateOrders` function has been removed and is now `addOrderUpdateCallback` and `removeOrderUpdateCallback` to follow the conventions of the web implementation.
 - The webview is now built custom in separate Android and iOS packages. React Native Webview is not used anymore.
-  - In order to consume the iOS package you will can consume the iOS pod directly. No need to change the Podfile.
-  - Android is currently in progress.
 - Updated the README with new changes for native packages.
 - Removed baseurl parameter
 

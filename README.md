@@ -162,21 +162,6 @@ Example:
 />
 ```
 
-#### onLogged
-
-Callback function that is called when something is logged.
-
-Example:
-
-```jsx
-<QliroOneCheckout
-  onLogged={(message) => console.log(message)}
-  // ...
-  // ...
-  // ...
-/>
-```
-
 ### SDK Specific Actions
 
 #### addOrderUpdateCallback and removeOrderUpdateCallback
