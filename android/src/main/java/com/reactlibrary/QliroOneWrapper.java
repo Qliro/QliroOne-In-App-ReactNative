@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 
 import com.qliro.qliroone.QliroOneCheckout;
@@ -17,29 +18,24 @@ public class QliroOneWrapper extends LinearLayout {
     private float displayDensity = 1;
     public QliroOneCheckout qliroOneCheckout;
 
-    public QliroOneWrapper(ReactApplicationContext context, AttributeSet attrs) {
+    public QliroOneWrapper(ThemedReactContext context, AttributeSet attrs) {
         super(context, attrs);
         // Get density for resizing.
         displayDensity = context.getResources().getDisplayMetrics().density;
 
         LinearLayout.LayoutParams webViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        qliroOneCheckout = new QliroOneCheckout(getReactAppContext().getCurrentActivity(), attrs); // Insure we use activity and not application context for dialogs.
+        qliroOneCheckout = new QliroOneCheckout(getReactAppContext().getCurrentActivity(), attrs); // Ensure we use activity and not application context for dialogs.
         addView(qliroOneCheckout, webViewParams);
     }
 
     public void setCheckoutHeight(int height) {
-        try {
-            final int width = getParentViewWidth();
-            final float scaledHeight = height * displayDensity;
-            getReactAppContext().runOnNativeModulesQueueThread(new GuardedRunnable(getReactAppContext()) {
-                @Override
-                public void runGuarded() {
-                    UIManagerModule uimm = getReactAppContext().getNativeModule(UIManagerModule.class);
-                    uimm.updateNodeSize(getId(), width, (int) scaledHeight);
-                }
-            });
-        } catch (Throwable t) {
-        }
+        final int width = getParentViewWidth();
+        ThemedReactContext context = getReactAppContext();
+        final float scaledHeight = height == 0 ? 1 : height * displayDensity;
+        context.runOnNativeModulesQueueThread(() -> {
+            UIManagerModule uimm = context.getNativeModule(UIManagerModule.class);
+            uimm.updateNodeSize(getId(), width, (int) scaledHeight);
+        });
     }
 
     /**
@@ -56,7 +52,7 @@ public class QliroOneWrapper extends LinearLayout {
     /**
      * Returns the app context the wrapper was initialized with.
      */
-    private ReactApplicationContext getReactAppContext() {
-        return (ReactApplicationContext) getContext();
+    private ThemedReactContext getReactAppContext() {
+        return (ThemedReactContext) getContext();
     }
 }

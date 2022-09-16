@@ -50,7 +50,6 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
 
     public static final String REACT_CLASS = "QliroOneCheckout";
 
-    private final ReactApplicationContext mCallerContext;
     private Map<WeakReference<QliroOneWrapper>, EventDispatcher> viewToDispatcher;
 
     @Override
@@ -60,21 +59,26 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
 
     public QliroOneManager(ReactApplicationContext reactContext) {
         super();
-        mCallerContext = reactContext;
         this.viewToDispatcher = new HashMap<>();
     }
 
     @Override
     public QliroOneWrapper createViewInstance(ThemedReactContext context) {
-        QliroOneWrapper qliroOneWrapper = new QliroOneWrapper(mCallerContext, null);
+        QliroOneWrapper qliroOneWrapper = new QliroOneWrapper(context, null);
         qliroOneWrapper.qliroOneCheckout.setQliroOneListener(this);
-
 
         // Each view has its own event dispatcher.
         EventDispatcher dispatcher = context.getNativeModule(UIManagerModule.class).getEventDispatcher();
         viewToDispatcher.put(new WeakReference(qliroOneWrapper), dispatcher);
 
         return qliroOneWrapper;
+    }
+
+    @Override
+    public void onDropViewInstance(@NonNull QliroOneWrapper view) {
+        WeakReference<QliroOneWrapper> ref = wrapperRefForQliroOne(view.qliroOneCheckout);
+        viewToDispatcher.remove(ref);
+        super.onDropViewInstance(view);
     }
 
     @ReactProp(name = "isScrollEnabled")
@@ -116,8 +120,6 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
      */
     @Override
     public void receiveCommand(@Nonnull QliroOneWrapper root, int commandId, @Nullable ReadableArray args) {
-        String sessionData = null;
-
         switch (commandId) {
             case COMMAND_LOAD_ORDER_HTML:
                 if (args != null) {
