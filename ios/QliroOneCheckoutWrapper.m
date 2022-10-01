@@ -259,4 +259,13 @@
 	return;
 }
 
+- (void)onCustomerDeauthenticating {
+	if (!self.onQCOCustomerDeauthenticating) {
+		RCTLog(@"Missing 'onQCOCustomerDeauthenticating callback prop.");
+		return;
+	}
+	self.onQCOCustomerDeauthenticating(@{});
+	return;
+}
+
 @end

@@ -35,6 +35,7 @@ RCT_REMAP_VIEW_PROPERTY(onSessionExpired, onQCOSessionExpired, RCTDirectEventBlo
 RCT_REMAP_VIEW_PROPERTY(onShippingMethodChanged, onQCOShippingMethodChangedWithShipping, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onShippingPriceChanged, onQCOShippingPriceChangedWithNewShippingPrice, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onCompletePurchaseRedirect, onQCOCompletePurchaseRedirectWithOptions, RCTDirectEventBlock)
+RCT_REMAP_VIEW_PROPERTY(onCustomerDeauthenticating, onQCOCustomerDeauthenticating, RCTDirectEventBlock)
 
 #pragma mark - QliroOneActions
 

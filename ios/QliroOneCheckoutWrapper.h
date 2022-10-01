@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTDirectEventBlock onQCOShippingMethodChangedWithShipping;
 @property (nonatomic, copy) RCTDirectEventBlock onQCOShippingPriceChangedWithNewShippingPrice;
 @property (nonatomic, copy) RCTDirectEventBlock onQCOCompletePurchaseRedirectWithOptions;
+@property (nonatomic, copy) RCTDirectEventBlock onQCOCustomerDeauthenticating;
 
 @end
 

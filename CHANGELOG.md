@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2022-10-01
+
+### Changed
+- Fix iOS crash when deauthenticating event is called.
+
 ## [0.1.3] - 2022-09-15
 
 ### Changed
