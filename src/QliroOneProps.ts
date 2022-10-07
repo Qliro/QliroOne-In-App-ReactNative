@@ -13,11 +13,6 @@ export interface QliroOneProps {
   isScrollEnabled?: boolean;
 
   /**
-   * Lock the Qliro One frontend and disable user interaction.
-   */
-  locked?: boolean;
-
-  /**
    * Used to exclude optional modules from displaying on the result page (thank you page).
    */
   excludedResultModules?: Module[];

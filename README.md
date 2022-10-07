@@ -97,10 +97,6 @@ Sets to enable scroll, default is false. If scrolling is disabled the component 
 
 ### SDK Specific Event props
 
-#### locked
-
-The frontend application is locked and user interaction is disabled until locked is false again.
-
 #### onOrderUpdated
 
 Called after the ´updateOrders´ action has been called when Qliro One has synced its orders.
@@ -111,10 +107,9 @@ Example:
 
 ```jsx
 const checkoutRef = useRef<QliroOneCheckout>(null);
-const [locked, setLocked] = useState(false)
 
 const onCartChanged = async () => {
-  setLocked(true);
+  checkoutRef.current?.lock();
   /// ...
   const updatedCart = await ...
   /// ...
@@ -126,15 +121,13 @@ const onOrderUpdated = (order: Order) => {
   const orderCorrect = localCart.products === order.orderItems;
   if (orderCorrect) {
     checkoutRef.current?.removeOrderUpdateCallback();
+    checkoutRef.current?.unlock();
   }
 };
 
 // ...
 <QliroOneCheckout
   onOrderUpdated={onOrderUpdated}
-  // ...
-  locked={locked}
-  // ...
   // ...
 />;
 ```
@@ -165,6 +158,12 @@ Example:
 ### SDK Specific Actions
 
 #### addOrderUpdateCallback and removeOrderUpdateCallback
+
+Initiates and removes the order sync process.
+
+See `onOrderUpdated`
+
+#### locked and unlock
 
 Initiates and removes the order sync process.
 

@@ -20,6 +20,8 @@ import { NativeCheckoutIOS } from "./QliroOneTypes";
 import { QliroOneListener } from "./QliroOneListener";
 
 type Actions = {
+  lock: () => void;
+  unlock: () => void;
   addOrderUpdateCallback: () => void;
   removeOrderUpdateCallback: () => void;
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -34,6 +36,12 @@ export const QliroOneCheckout = forwardRef<
   const viewRef = useRef<View>(null);
   const [checkoutLoaded, setCheckoutLoaded] = useState(false);
   useImperativeHandle(ref, () => ({
+    lock: () => {
+      checkoutRef.current?.lock();
+    },
+    unlock: () => {
+      checkoutRef.current?.unlock();
+    },
     addOrderUpdateCallback: () => {
       checkoutRef.current?.addOrderUpdateCallback();
     },
@@ -69,19 +77,6 @@ export const QliroOneCheckout = forwardRef<
       );
     }
   }, [checkoutLoaded, props.isCheckoutScrollEnabled]);
-
-  useEffect(() => {
-    if (!checkoutLoaded) {
-      return;
-    }
-    if (typeof props.locked === "boolean") {
-      if (props.locked) {
-        checkoutRef.current?.lock();
-      } else {
-        checkoutRef.current?.unlock();
-      }
-    }
-  }, [checkoutLoaded, props.locked]);
 
   useEffect(() => {
     if (!checkoutLoaded) {

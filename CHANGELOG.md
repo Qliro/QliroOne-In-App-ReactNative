@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2022-10-07
+
+### Changed
+
+- Made locked prop into a component function again.
+
 ## [0.1.6] - 2022-10-07
 
 ### Changed
