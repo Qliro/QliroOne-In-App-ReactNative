@@ -4,6 +4,6 @@ export interface Address {
   street?: string;
   careOf?: string;
   city?: string;
-  postalCode?: number;
+  postalCode?: string;
   isMasked: boolean;
 }

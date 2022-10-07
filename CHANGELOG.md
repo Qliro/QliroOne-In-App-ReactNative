@@ -7,30 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2022-10-07
+
+### Changed
+
+- Changed type for postalCode from number to string.
+
 ## [0.1.4] - 2022-10-01
 
 ### Changed
+
 - Fix iOS crash when deauthenticating event is called.
 
 ## [0.1.3] - 2022-09-15
 
 ### Changed
+
 - Fix context creation issue in Android bridge.
 
 ## [0.1.2] - 2022-09-15
 
 ### Changed
+
 - Fix import issue in iOS
 
 ## [0.1.1] - 2022-09-15
 
 ### Changed
+
 - Update android package
 - Remove android configuration breaking build
 
 ## [0.1.0] - 2022-09-15
 
 ### Changed
+
 - `lock` and `unlock` functions in the QliroOneCheckout is now a property called `locked`
 - `updateOrders` function has been removed and is now `addOrderUpdateCallback` and `removeOrderUpdateCallback` to follow the conventions of the web implementation.
 - The webview is now built custom in separate Android and iOS packages. React Native Webview is not used anymore.
@@ -74,4 +85,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added missing [onCustomerDeauthenticating listener](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#oncustomerdeauthenticating()>)
 - Added declineReasonMessage to [onPaymentDeclined listener](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onpaymentdeclined()>)
 - Added newTotalShippingPrice to [onShippingPriceChanged listener](<https://developers.qliro.com/docs/qliro-one/frontend-features/listeners#onshippingpricechanged()>)
-
