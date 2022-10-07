@@ -134,7 +134,7 @@
 		[self addIfNotNilWitDictionary:customerData value:addressData key:@"address"];
 	}
 	
-	self.onQCOCustomerInfoChangedWithCustomer(customerData);
+	self.onQCOCustomerInfoChangedWithCustomer(@{@"customer": customerData});
 }
 
 
