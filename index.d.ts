@@ -7,11 +7,11 @@ declare class QliroOneCheckout extends Component<QliroOneListener & QliroOneProp
   /**
    * Lock the Qliro One frontend and disable user interaction.
    */
-  // lock: () => void;
+  lock: () => void;
   /**
    * Unlock the Qliro One frontend and enable user interaction.
    */
-  // unlock: () => void;
+  unlock: () => void;
   /**
    * Initiates the order sync process. The frontend application is locked and user interaction is disabled until
    * the return value of the provided callback function isUpdated is truthy.

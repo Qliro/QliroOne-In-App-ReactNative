@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.8] - 2022-10-08
+
+### Changed
+
+- Add missing types for lock and unlock functions.
+
 ## [0.1.7] - 2022-10-07
 
 ### Changed
