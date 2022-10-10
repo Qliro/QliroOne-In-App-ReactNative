@@ -138,13 +138,14 @@
 }
 
 
-- (void)onPaymentDeclinedWithDeclineReason:(NSString * _Nonnull)declineReason {
+- (void)onPaymentDeclinedWithDeclineReason:(NSString * _Nonnull)declineReason declineReasonMessage:(NSString *)declineReasonMessage {
 	if (!self.onQCOPaymentDeclinedWithDeclineReason) {
 		RCTLog(@"Missing 'onQCOPaymentDeclinedWithDeclineReason callback prop.");
 		return;
 	}
 	NSMutableDictionary *declineReasonData = [NSMutableDictionary new];
 	[self addIfNotNilWitDictionary:declineReasonData value:declineReason key:@"declineReason"];
+	[self addIfNotNilWitDictionary:declineReasonData value:declineReason key:@"declineReasonMessage"];
 	self.onQCOPaymentDeclinedWithDeclineReason(declineReasonData);
 }
 
@@ -158,6 +159,7 @@
 	[self addIfNotNilWitDictionary:paymentMethodData value:paymentMethod.method key:@"method"];
 	[self addIfNotNilWitDictionary:paymentMethodData value:paymentMethod.subtype key:@"subtype"];
 	[self addIfNotNilWitDictionary:paymentMethodData value:[NSNumber numberWithInteger:paymentMethod.price] key:@"price"];
+	[self addIfNotNilWitDictionary:paymentMethodData value:[NSNumber numberWithInteger:paymentMethod.price] key:@"priceExVat"];
 	self.onQCOPaymentMethodChangedWithPaymentMethod(@{@"paymentMethod": paymentMethodData});
 }
 
@@ -170,7 +172,11 @@
 	NSMutableDictionary *shippingData = [NSMutableDictionary new];
 	[self addIfNotNilWitDictionary:shippingData value:shipping.method key:@"method"];
 	[self addIfNotNilWitDictionary:shippingData value:shipping.secondaryOption key:@"secondaryOption"];
+	[self addIfNotNilWitDictionary:shippingData value:shipping.additionalShippingServices key:@"additionalShippingServices"];
 	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.price] key:@"price"];
+	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.priceExVat] key:@"priceExVat"];
+	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.totalShippingPrice] key:@"totalShippingPrice"];
+	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.totalShippnigPriceExVat] key:@"totalShippnigPriceExVat"];
 	self.onQCOShippingMethodChangedWithShipping(@{@"shipping": shippingData});
 }
 
@@ -210,17 +216,6 @@
 	self.onQCOSessionExpired(@{});
 }
 
-- (void)onPaymentDeclinedWithDeclineReason:(NSString * _Nonnull)declineReason declineReasonMessage:(NSString * _Nonnull)declineReasonMessage {
-	if (!self.onQCOPaymentDeclinedWithDeclineReason) {
-		RCTLog(@"Missing 'onQCOPaymentDeclinedWithDeclineReason callback prop.");
-		return;
-	}
-	NSMutableDictionary *reasonData = [NSMutableDictionary new];
-	[self addIfNotNilWitDictionary:reasonData value:declineReason key:@"declineReason"];
-	[self addIfNotNilWitDictionary:reasonData value:declineReasonMessage key:@"declineReasonMessage"];
-	self.onQCOPaymentDeclinedWithDeclineReason(@{@"reason":reasonData});
-}
-
 - (void)onCheckoutHeightChangedWithHeight:(NSInteger)height {
 	[self.uiManager setIntrinsicContentSize:CGSizeMake(UIViewNoIntrinsicMetric, height) forView:self];
 }
@@ -251,7 +246,7 @@
 		NSMutableDictionary *orderItemData = [NSMutableDictionary new];
 		[self addIfNotNilWitDictionary:orderItemData value:orderItem.merchantReference key:@"merchantReference"];
 		[self addIfNotNilWitDictionary:orderItemData value:[NSNumber numberWithInteger:orderItem.pricePerItemIncVat] key:@"pricePerItemIncVat"];
-		 [self addIfNotNilWitDictionary:orderItemData value:[NSNumber numberWithInteger:orderItem.quantity] key:@"quantity"];
+		[self addIfNotNilWitDictionary:orderItemData value:[NSNumber numberWithInteger:orderItem.quantity] key:@"quantity"];
 		[orderItems addObject:orderItemData];
 	}
 	[self addIfNotNilWitDictionary:orderData value:orderItems key:@"orderItems"];

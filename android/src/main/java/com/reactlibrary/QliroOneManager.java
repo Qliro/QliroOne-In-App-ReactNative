@@ -271,7 +271,8 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
                         MapBuilder.of(
                                 "method", paymentMethod.getMethod(),
                                 "subtype", paymentMethod.getSubtype(),
-                                "price", paymentMethod.getPrice())),
+                                "price", paymentMethod.getPrice(),
+                                "priceExVat", paymentMethod.getPriceExVat())),
                 view);
     }
 
@@ -309,7 +310,11 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
                         "shipping", MapBuilder.of(
                                 "method", shipping.getMethod(),
                                 "secondaryOption", shipping.getSecondaryOption(),
-                                "price", shipping.getPrice())),
+                                "additionalShippingServices", shipping.getAdditionalShippingServices(),
+                                "price", shipping.getPrice(),
+                                "priceExVat", shipping.getPriceExVat(),
+                                "totalShippingPrice", shipping.getTotalShippingPrice(),
+                                "totalShippnigPriceExVat", shipping.getTotalShippnigPriceExVat())),
                 view);
     }
 
