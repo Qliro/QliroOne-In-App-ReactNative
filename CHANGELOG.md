@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.10] - 2022-10-08
+
+### Changed
+
+- BankID redirect fix for Android
+- Make use of double for all price parameters
+
 ## [0.1.9] - 2022-10-08
 
 ### Changed

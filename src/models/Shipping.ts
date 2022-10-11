@@ -5,5 +5,5 @@ export interface Shipping {
   price: number;
   priceExVat: number;
   totalShippingPrice: number;
-  totalShippnigPriceExVat: number;
+  totalShippingPriceExVat: number;
 }

@@ -2,6 +2,8 @@
 
 package com.reactlibrary;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -314,7 +316,7 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
                                 "price", shipping.getPrice(),
                                 "priceExVat", shipping.getPriceExVat(),
                                 "totalShippingPrice", shipping.getTotalShippingPrice(),
-                                "totalShippnigPriceExVat", shipping.getTotalShippnigPriceExVat())),
+                                "totalShippingPriceExVat", shipping.getTotalShippingPriceExVat())),
                 view);
     }
 
@@ -335,7 +337,7 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
         for (OrderItem orderItem : order.getOrderItems()) {
             WritableNativeMap orderItemMap = new WritableNativeMap();
             orderItemMap.putString("merchantReference", orderItem.getMerchantReference());
-            orderItemMap.putInt("pricePerItemIncVat", orderItem.getPricePerItemIncVat());
+            orderItemMap.putDouble("pricePerItemIncVat", orderItem.getPricePerItemIncVat());
             orderItemMap.putInt("quantity", orderItem.getQuantity());
             orderItemsArray.pushMap(orderItemMap);
         }
@@ -371,7 +373,13 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
     }
 
     @Override
-    public void onOpenBankId(@NonNull Intent intent) {
+    public void onOpenBankId(QliroOneCheckout qliroOneView, @NonNull Intent intent) {
+        // val uri = intent.data!!.toString().replace("redirect=null", "redirect=qliroonesample://")
+        // intent.data = Uri.parse(uri)
+        WeakReference<QliroOneWrapper> wrapperRef = wrapperRefForQliroOne(qliroOneView);
+        if(wrapperRef != null) {
+            wrapperRef.get().getContext().startActivity(intent);
+        }
     }
 
     private WeakReference<QliroOneWrapper> wrapperRefForQliroOne(QliroOneCheckout qliroOneView) {

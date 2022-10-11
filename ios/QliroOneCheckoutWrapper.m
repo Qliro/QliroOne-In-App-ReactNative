@@ -158,8 +158,8 @@
 	NSMutableDictionary *paymentMethodData = [NSMutableDictionary new];
 	[self addIfNotNilWitDictionary:paymentMethodData value:paymentMethod.method key:@"method"];
 	[self addIfNotNilWitDictionary:paymentMethodData value:paymentMethod.subtype key:@"subtype"];
-	[self addIfNotNilWitDictionary:paymentMethodData value:[NSNumber numberWithInteger:paymentMethod.price] key:@"price"];
-	[self addIfNotNilWitDictionary:paymentMethodData value:[NSNumber numberWithInteger:paymentMethod.price] key:@"priceExVat"];
+	[self addIfNotNilWitDictionary:paymentMethodData value:[NSNumber numberWithDouble:paymentMethod.price] key:@"price"];
+	[self addIfNotNilWitDictionary:paymentMethodData value:[NSNumber numberWithDouble:paymentMethod.price] key:@"priceExVat"];
 	self.onQCOPaymentMethodChangedWithPaymentMethod(@{@"paymentMethod": paymentMethodData});
 }
 
@@ -173,10 +173,10 @@
 	[self addIfNotNilWitDictionary:shippingData value:shipping.method key:@"method"];
 	[self addIfNotNilWitDictionary:shippingData value:shipping.secondaryOption key:@"secondaryOption"];
 	[self addIfNotNilWitDictionary:shippingData value:shipping.additionalShippingServices key:@"additionalShippingServices"];
-	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.price] key:@"price"];
-	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.priceExVat] key:@"priceExVat"];
-	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.totalShippingPrice] key:@"totalShippingPrice"];
-	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithInteger:shipping.totalShippnigPriceExVat] key:@"totalShippnigPriceExVat"];
+	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithDouble:shipping.price] key:@"price"];
+	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithDouble:shipping.priceExVat] key:@"priceExVat"];
+	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithDouble:shipping.totalShippingPrice] key:@"totalShippingPrice"];
+	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithDouble:shipping.totalShippingPriceExVat] key:@"totalShippingPriceExVat"];
 	self.onQCOShippingMethodChangedWithShipping(@{@"shipping": shippingData});
 }
 
@@ -186,8 +186,8 @@
 		return;
 	}
 	NSMutableDictionary *newShippingPriceData = [NSMutableDictionary new];
-	[self addIfNotNilWitDictionary:newShippingPriceData value:[NSNumber numberWithInteger:newShippingPrice] key:@"newShippingPrice"];
-	[self addIfNotNilWitDictionary:newShippingPriceData value:[NSNumber numberWithInteger:newTotalShippingPrice] key:@"newTotalShippingPrice"];
+	[self addIfNotNilWitDictionary:newShippingPriceData value:[NSNumber numberWithDouble:newShippingPrice] key:@"newShippingPrice"];
+	[self addIfNotNilWitDictionary:newShippingPriceData value:[NSNumber numberWithDouble:newTotalShippingPrice] key:@"newTotalShippingPrice"];
 	self.onQCOShippingPriceChangedWithNewShippingPrice(@{@"shippingPrice": newShippingPriceData});
 }
 
@@ -239,13 +239,13 @@
 	}
 	
 	NSMutableDictionary *orderData = [NSMutableDictionary new];
-	[self addIfNotNilWitDictionary:orderData value:[NSNumber numberWithInteger:order.totalPrice] key:@"totalPrice"];
+	[self addIfNotNilWitDictionary:orderData value:[NSNumber numberWithDouble:order.totalPrice] key:@"totalPrice"];
 	
 	NSMutableArray *orderItems = [NSMutableArray new];
 	for (OrderItem *orderItem in order.orderItems) {
 		NSMutableDictionary *orderItemData = [NSMutableDictionary new];
 		[self addIfNotNilWitDictionary:orderItemData value:orderItem.merchantReference key:@"merchantReference"];
-		[self addIfNotNilWitDictionary:orderItemData value:[NSNumber numberWithInteger:orderItem.pricePerItemIncVat] key:@"pricePerItemIncVat"];
+		[self addIfNotNilWitDictionary:orderItemData value:[NSNumber numberWithDouble:orderItem.pricePerItemIncVat] key:@"pricePerItemIncVat"];
 		[self addIfNotNilWitDictionary:orderItemData value:[NSNumber numberWithInteger:orderItem.quantity] key:@"quantity"];
 		[orderItems addObject:orderItemData];
 	}
