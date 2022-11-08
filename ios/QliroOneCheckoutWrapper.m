@@ -21,7 +21,7 @@
 {
 	self = [super init];
 	if (self) {
-		self.checkoutView = [[QliroOneCheckout alloc] init];
+		self.checkoutView = [[QliroOneCheckout alloc] initWithReactNativeSDKVersion: @"0.1.11"];
 		self.checkoutView.qliroOneListener = self;
 		self.checkoutView.translatesAutoresizingMaskIntoConstraints = NO;
 		self.checkoutView.isScrollEnabled = false;
@@ -239,6 +239,7 @@
 	}
 	
 	NSMutableDictionary *orderData = [NSMutableDictionary new];
+	[self addIfNotNilWitDictionary:orderData value:order.merchantUpdateVersion key:@"merchantUpdateVersion"];
 	[self addIfNotNilWitDictionary:orderData value:[NSNumber numberWithDouble:order.totalPrice] key:@"totalPrice"];
 	
 	NSMutableArray *orderItems = [NSMutableArray new];

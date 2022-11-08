@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.11] - 2022-11-08
+
+### Added
+
+- Add optional parameter merchantUpdateVersion to order
+
 ## [0.1.10] - 2022-10-08
 
 ### Changed

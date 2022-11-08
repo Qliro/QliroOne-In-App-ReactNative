@@ -342,12 +342,18 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
             orderItemsArray.pushMap(orderItemMap);
         }
 
+        MapBuilder.Builder builder = MapBuilder.builder()
+                .put("totalPrice", order.getTotalPrice())
+                .put("orderItems", orderItemsArray);
+
+        if(order.getMerchantUpdateVersion() != null) {
+            builder.put("merchantUpdateVersion", order.getMerchantUpdateVersion());
+        }
+
         dispatchEvent(
                 QliroOneEvent.EVENT_NAME_ON_ORDER_UPDATED,
                 MapBuilder.of(
-                        "order", MapBuilder.of(
-                                "totalPrice", order.getTotalPrice(),
-                                "orderItems", orderItemsArray)),
+                        "order", builder.build()),
                 view);
     }
 
