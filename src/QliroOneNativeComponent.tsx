@@ -1,5 +1,5 @@
-import { requireNativeComponent } from 'react-native';
-import { NativeCheckoutIOS } from './QliroOneTypes';
+import { requireNativeComponent } from "react-native";
+import { NativeCheckout } from "./QliroOneTypes";
 
-export const QlirOneNativeCheckout: typeof NativeCheckoutIOS =
-  requireNativeComponent('QliroOneCheckout');
+export const QlirOneNativeCheckout: typeof NativeCheckout =
+  requireNativeComponent("QliroOneCheckout");

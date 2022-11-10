@@ -16,7 +16,7 @@ import {
 import * as Models from "./models";
 import { QlirOneNativeCheckout } from "./QliroOneNativeComponent";
 import { QliroOneProps } from "./QliroOneProps";
-import { NativeCheckoutIOS } from "./QliroOneTypes";
+import { NativeCheckout } from "./QliroOneTypes";
 import { QliroOneListener } from "./QliroOneListener";
 
 type Actions = {
@@ -109,6 +109,7 @@ export const QliroOneCheckout = forwardRef<
           setCheckoutLoaded(true);
           props.onCheckoutLoaded?.();
         }}
+        isScrollEnabled={props.isScrollEnabled ?? true}
       />
     </View>
   );
@@ -117,7 +118,7 @@ export const QliroOneCheckout = forwardRef<
 class NativeQliroOneCheckout extends React.Component<
   QliroOneListener & QliroOneProps
 > {
-  webViewRef = React.createRef<NativeCheckoutIOS>();
+  webViewRef = React.createRef<NativeCheckout>();
 
   private getCommands() {
     return UIManager.getViewManagerConfig("QliroOneCheckout").Commands;
@@ -208,10 +209,18 @@ class NativeQliroOneCheckout extends React.Component<
     );
   }
 
+  getStyle() {
+    if (this.props.isScrollEnabled) {
+      return { height: "100%" };
+    }
+    return undefined;
+  }
+
   render() {
     return (
       <QlirOneNativeCheckout
         {...this.props}
+        style={this.getStyle()}
         ref={this.webViewRef}
         onCheckoutLoaded={() => {
           return this.props.onCheckoutLoaded?.();

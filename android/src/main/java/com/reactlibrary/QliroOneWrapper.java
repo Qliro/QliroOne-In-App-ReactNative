@@ -24,7 +24,7 @@ public class QliroOneWrapper extends LinearLayout {
         displayDensity = context.getResources().getDisplayMetrics().density;
 
         LinearLayout.LayoutParams webViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        qliroOneCheckout = new QliroOneCheckout(getReactAppContext().getCurrentActivity(), attrs, "0.1.11"); // Ensure we use activity and not application context for dialogs.
+        qliroOneCheckout = new QliroOneCheckout(getReactAppContext().getCurrentActivity(), attrs, "0.1.12"); // Ensure we use activity and not application context for dialogs.
         addView(qliroOneCheckout, webViewParams);
     }
 
