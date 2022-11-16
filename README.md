@@ -6,13 +6,45 @@ This package wraps QliroOne Checkout and exposes its functionality as a React Na
 
 ## Getting started
 
-### Pod install
+Install the package `yarn add qliroone_reactnative`
 
-Run `cd ios && pod install`.
+### iOS
+
+Run `pod install --project-directory=ios`.
+
+### Android
+
+Nothing more required
+
+## Payment Providers
+
+### BankID (Trustly and customer authentication)
+
+To be able to open BankID in Sweden you will have to add an entry in the `Info.plist` for iOS:
+
+```xml
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>bankid</string>
+	</array>
+```
+
+### Swish
+
+To be able to open Swish in Sweden you will have to add an entry in the `Info.plist` for iOS:
+
+```xml
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>swish</string>
+	</array>
+```
 
 ## Usage
 
 Import the `QliroOneCheckout` component from `qliroone_reactnative` and use it like:
+
+With scroll enabled (default):
 
 ```jsx
 import React from "react";
@@ -22,29 +54,42 @@ import { QliroOneCheckout } from "qliroone_reactnative";
 // ...
 
 const CheckoutPage = () => {
-  const checkoutRef = useRef < QliroOneCheckout > null;
+  const checkoutRef = useRef<QliroOneCheckout>(null);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <QliroOneCheckout
-        orderHtml={orderHtml}
         ref={checkoutRef}
-        onCheckoutLoaded={() => {}}
-        onCustomerInfoChanged={() => {}}
-        onPaymentMethodChanged={() => {}}
-        onPaymentProcessStart={() => {}}
-        onPaymentProcessEnd={() => {}}
-        onShippingMethodChanged={() => {}}
-        onShippingPriceChanged={() => {}}
-        onOrderUpdated={() => {}}
-        onCompletePurchaseRedirect={() => {}}
-        onPaymentDeclined={() => {}}
-        onSessionExpired={() => {}}
-        onCustomerDeauthenticating={() => {}}
-        isScrollEnabled={scrollEnabled}
-        onLogged={onLogged}
+        orderHtml={htmlSnippet}
+        isScrollEnabled={true}
+        onCheckoutLoaded={() => console.log("loaded")}
       />
     </View>
+  );
+};
+```
+
+With scroll disabled:
+
+```jsx
+import React from "react";
+import { View } from "react-native";
+import { QliroOneCheckout } from "qliroone_reactnative";
+
+// ...
+
+const CheckoutPage = () => {
+  const checkoutRef = useRef<QliroOneCheckout>(null);
+
+  return (
+    <ScrollView style={{ flex: 1 }}>
+      <QliroOneCheckout
+        ref={checkoutRef}
+        orderHtml={htmlSnippet}
+        isScrollEnabled={false}
+        onCheckoutLoaded={() => console.log('loaded')}
+      />
+    </ScrollView>
   );
 };
 ```
@@ -52,7 +97,7 @@ const CheckoutPage = () => {
 ### Configurable props
 
 - [orderHtml](#orderHtml)
-- [scrollEnabled](#scrollEnabled)
+- [isScrollEnabled](#isScrollEnabled)
 
 ### Checkout Event props
 
@@ -91,9 +136,9 @@ const CheckoutPage = () => {
 
 The html-snippet to the checkout, it is the html-snippet returned from the [getOrder](https://developers.qliro.com/docs/qliro-one/get-started/load-checkout#get-order).
 
-#### scrollEnabled
+#### isScrollEnabled
 
-Sets to enable scroll, default is false. If scrolling is disabled the component height is as tall as required.
+Sets to enable scroll, default is true. If scrolling is disabled the component height is as tall as the content of QlirOne.
 
 ### SDK Specific Event props
 
@@ -118,7 +163,7 @@ const onCartChanged = async () => {
 
 const onOrderUpdated = (order: Order) => {
   // Check that the order is synced with your order.
-  const orderCorrect = localCart.products === order.orderItems;
+  const orderCorrect = ...
   if (orderCorrect) {
     checkoutRef.current?.removeOrderUpdateCallback();
     checkoutRef.current?.unlock();
@@ -163,7 +208,7 @@ Initiates and removes the order sync process.
 
 See `onOrderUpdated`
 
-#### locked and unlock
+#### lock and unlock
 
 Initiates and removes the order sync process.
 
