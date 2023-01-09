@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.15] - 2023-01-09
+
+### Changed
+
+- Update to iOS package version 2.2.0 to enable PayPal support
+- Update to Android package version 2.2.0
+
 ## [0.1.14] - 2022-11-16
 
 ### Changed
