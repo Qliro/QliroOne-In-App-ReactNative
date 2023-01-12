@@ -378,16 +378,6 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
         }
     }
 
-    @Override
-    public void onOpenBankId(QliroOneCheckout qliroOneView, @NonNull Intent intent) {
-        // val uri = intent.data!!.toString().replace("redirect=null", "redirect=qliroonesample://")
-        // intent.data = Uri.parse(uri)
-        WeakReference<QliroOneWrapper> wrapperRef = wrapperRefForQliroOne(qliroOneView);
-        if(wrapperRef != null) {
-            wrapperRef.get().getContext().startActivity(intent);
-        }
-    }
-
     private WeakReference<QliroOneWrapper> wrapperRefForQliroOne(QliroOneCheckout qliroOneView) {
         for (WeakReference<QliroOneWrapper> reference : viewToDispatcher.keySet()) {
             QliroOneWrapper wrapper = reference.get();
