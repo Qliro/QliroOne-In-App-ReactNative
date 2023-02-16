@@ -6,4 +6,5 @@ export interface Shipping {
   priceExVat: number;
   totalShippingPrice: number;
   totalShippingPriceExVat: number;
+  accessCode?: string;
 }

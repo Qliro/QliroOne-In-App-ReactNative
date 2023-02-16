@@ -21,7 +21,7 @@
 {
 	self = [super init];
 	if (self) {
-		self.checkoutView = [[QliroOneCheckout alloc] initWithReactNativeSDKVersion: @"0.1.16"];
+		self.checkoutView = [[QliroOneCheckout alloc] initWithReactNativeSDKVersion: @"0.1.17"];
 		self.checkoutView.qliroOneListener = self;
 		self.checkoutView.translatesAutoresizingMaskIntoConstraints = NO;
 		self.checkoutView.isScrollEnabled = false;
@@ -177,6 +177,7 @@
 	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithDouble:shipping.priceExVat] key:@"priceExVat"];
 	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithDouble:shipping.totalShippingPrice] key:@"totalShippingPrice"];
 	[self addIfNotNilWitDictionary:shippingData value:[NSNumber numberWithDouble:shipping.totalShippingPriceExVat] key:@"totalShippingPriceExVat"];
+	[self addIfNotNilWitDictionary:shippingData value:shipping.accessCode key:@"accessCode"];
 	self.onQCOShippingMethodChangedWithShipping(@{@"shipping": shippingData});
 }
 

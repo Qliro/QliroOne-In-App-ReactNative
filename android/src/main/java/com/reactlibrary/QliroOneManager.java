@@ -53,7 +53,7 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
     public static final String REACT_CLASS = "QliroOneCheckout";
 
     private Map<WeakReference<QliroOneWrapper>, EventDispatcher> viewToDispatcher;
-
+    
     @Override
     public String getName() {
         return REACT_CLASS;
@@ -306,17 +306,22 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
 
     @Override
     public void onShippingMethodChanged(QliroOneCheckout view, @NonNull Shipping shipping) {
+        MapBuilder.Builder builder = MapBuilder.builder()
+                .put("method", shipping.getMethod())
+                .put("secondaryOption", shipping.getSecondaryOption())
+                .put("additionalShippingServices", shipping.getAdditionalShippingServices())
+                .put("price", shipping.getPrice())
+                .put("priceExVat", shipping.getPriceExVat())
+                .put("totalShippingPrice", shipping.getTotalShippingPrice())
+                .put("totalShippingPriceExVat", shipping.getTotalShippingPriceExVat());
+
+        if(shipping.getAccessCode() != null) {
+            builder.put("accessCode", shipping.getAccessCode());
+        }
         dispatchEvent(
                 QliroOneEvent.EVENT_NAME_ON_SHIPPING_METHOD_CHANGED,
                 MapBuilder.of(
-                        "shipping", MapBuilder.of(
-                                "method", shipping.getMethod(),
-                                "secondaryOption", shipping.getSecondaryOption(),
-                                "additionalShippingServices", shipping.getAdditionalShippingServices(),
-                                "price", shipping.getPrice(),
-                                "priceExVat", shipping.getPriceExVat(),
-                                "totalShippingPrice", shipping.getTotalShippingPrice(),
-                                "totalShippingPriceExVat", shipping.getTotalShippingPriceExVat())),
+                        "shipping", builder.build()),
                 view);
     }
 
