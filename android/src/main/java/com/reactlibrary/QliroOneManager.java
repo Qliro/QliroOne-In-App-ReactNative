@@ -283,9 +283,10 @@ public class QliroOneManager extends SimpleViewManager<QliroOneWrapper> implemen
                                   @NonNull String declineReasonMessage) {
         dispatchEvent(
                 QliroOneEvent.EVENT_NAME_ON_PAYMENT_DECLINED,
-                MapBuilder.of(
-                        "declineReason", declineReason,
-                        "declineReasonMessage", declineReasonMessage),
+                MapBuilder.of("reason",
+                    MapBuilder.of(
+                            "declineReason", declineReason,
+                            "declineReasonMessage", declineReasonMessage)),
                 view);
     }
 

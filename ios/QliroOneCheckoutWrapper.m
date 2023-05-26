@@ -146,7 +146,7 @@
 	NSMutableDictionary *declineReasonData = [NSMutableDictionary new];
 	[self addIfNotNilWitDictionary:declineReasonData value:declineReason key:@"declineReason"];
 	[self addIfNotNilWitDictionary:declineReasonData value:declineReason key:@"declineReasonMessage"];
-	self.onQCOPaymentDeclinedWithDeclineReason(declineReasonData);
+	self.onQCOPaymentDeclinedWithDeclineReason(@{@"reason": declineReasonData});
 }
 
 
