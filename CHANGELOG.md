@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.18] - 2023-05-26
+
+### Changed
+
+- Fixed onPaymentDeclined crash
+- Updated to iOS package version 2.2.4
+- Update to Android package version 2.2.4
+
 ## [0.1.17] - 2023-02-16
 
 ### Changed
