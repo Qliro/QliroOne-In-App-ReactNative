@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.19] - 2023-06-26
+
+### Changed
+
+- Updated to iOS package version 2.2.5
+- Update to Android package version 2.2.5
+
 ## [0.1.18] - 2023-05-26
 
 ### Changed

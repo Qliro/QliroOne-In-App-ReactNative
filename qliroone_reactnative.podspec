@@ -24,6 +24,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React"
-  s.dependency "QliroOne", "2.2.4"
+  s.dependency "QliroOne", "2.2.5"
 end
 
