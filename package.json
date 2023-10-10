@@ -1,7 +1,7 @@
 {
   "name": "qliroone_reactnative",
   "title": "React Native Qliro One",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "This library is a QliroOne wrapper for React Native.",
   "main": "index.js",
   "typings": "index.d.ts",
