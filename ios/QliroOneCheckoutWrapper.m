@@ -21,7 +21,7 @@
 {
 	self = [super init];
 	if (self) {
-		self.checkoutView = [[QliroOneCheckout alloc] initWithReactNativeSDKVersion: @"0.1.17"];
+		self.checkoutView = [[QliroOneCheckout alloc] initWithReactNativeSDKVersion: @"0.1.21"];
 		self.checkoutView.qliroOneListener = self;
 		self.checkoutView.translatesAutoresizingMaskIntoConstraints = NO;
 		self.checkoutView.isScrollEnabled = false;
