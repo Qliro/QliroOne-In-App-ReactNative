@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.21] - 2025-11-??
+
+### Changed
+
+- Apple Pay merchant ID configuration via `applePayMerchantId` prop
+- Update QliroOne iOS SDK to new version with Apple Pay support.
+
 ## [0.1.20] - 2023-10-09
 
 ### Changed

@@ -24,6 +24,7 @@ RCT_EXPORT_MODULE(QliroOneCheckout)
 }
 
 RCT_EXPORT_VIEW_PROPERTY(isScrollEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(applePayMerchantId, NSString)
 RCT_REMAP_VIEW_PROPERTY(onCheckoutLoaded, onQCOCheckoutLoaded, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onCustomerInfoChanged, onQCOCustomerInfoChangedWithCustomer, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onOrderUpdated, onQCOOrderUpdatedWithOrder, RCTDirectEventBlock)
