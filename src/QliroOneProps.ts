@@ -24,10 +24,10 @@ export interface QliroOneProps {
   isCheckoutScrollEnabled?: boolean;
 
   /**
-   * Apple Pay meqchant identifier for processing Apple Pay payments.
+   * Apple Pay merchant identifier for processing Apple Pay payments.
    * Required for Apple Pay functionality. Example: "merchant.com.yourcompany.app"
    */
-  applePayMerchantId?: boolean;
+  applePayMerchantId?: string;
 
   /**
    * Called when something is logged
