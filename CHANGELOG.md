@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.22] - 2025-12-19
+
+### Changed
+
+- Apple Pay merchant ID configuration via `applePayMerchantId` prop
+- Update QliroOne iOS SDK to new version with Apple Pay support.
+
+## [0.1.21] - 2023-10-09
+
+### Changed
+
+- Updated to iOS package version 2.2.8
+- Update to Android package version 2.2.8
 
 ## [0.1.20] - 2023-10-09
 

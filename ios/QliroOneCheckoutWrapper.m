@@ -21,7 +21,7 @@
 {
 	self = [super init];
 	if (self) {
-		self.checkoutView = [[QliroOneCheckout alloc] initWithReactNativeSDKVersion: @"0.1.17"];
+		self.checkoutView = [[QliroOneCheckout alloc] initWithReactNativeSDKVersion: @"0.1.22"];
 		self.checkoutView.qliroOneListener = self;
 		self.checkoutView.translatesAutoresizingMaskIntoConstraints = NO;
 		self.checkoutView.isScrollEnabled = false;
@@ -50,6 +50,11 @@
 
 - (void)setIsScrollEnabled:(BOOL)isScrollEnabled{
 	self.checkoutView.isScrollEnabled = isScrollEnabled;
+}
+
+- (void)setApplePayMerchantId:(NSString *)applePayMerchantId {
+    _applePayMerchantId = applePayMerchantId;
+    self.checkoutView.applePayMerchantId = applePayMerchantId;
 }
 
 #pragma mark - QliroOneActions

@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface QliroOneCheckoutWrapper : RCTView
 
 @property (nonatomic, assign) BOOL isScrollEnabled;
+@property (nonatomic, copy, nullable) NSString *applePayMerchantId;
+
 
 @property (nonatomic, weak) RCTUIManager* uiManager;
 
