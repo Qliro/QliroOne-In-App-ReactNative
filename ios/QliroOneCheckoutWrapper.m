@@ -54,7 +54,9 @@
 
 - (void)setApplePayMerchantId:(NSString *)applePayMerchantId {
     _applePayMerchantId = applePayMerchantId;
+    NSLog(@"[QliroOne] setApplePayMerchantId: %@", applePayMerchantId);
     self.checkoutView.applePayMerchantId = applePayMerchantId;
+    NSLog(@"[QliroOne] checkoutView.applePayMerchantId after set: %@", self.checkoutView.applePayMerchantId);
 }
 
 #pragma mark - QliroOneActions
