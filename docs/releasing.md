@@ -75,13 +75,12 @@ Do not remove it. Without it the first publish of any new scoped package in this
 ### Where `homepage`, `bugs` and `repository` point
 
 These are baked into the published npm metadata and rendered on the package page, so they were
-settled before the first `@qliro/react-native-qliro-one` publish. They previously pointed at
-`github.com/qliro/qliroone-in-app-reactNative`, which is not where this SDK is developed and where
-nobody triages issues.
+settled before the first `@qliro/react-native-qliro-one` publish.
 
 ```json
-"bugs":     { "email": "app@qliro.com" },
-"homepage": "https://developers.qliro.com/docs/qliro-one"
+"bugs":       { "email": "app@qliro.com" },
+"homepage":   "https://developers.qliro.com/docs/qliro-one",
+"repository": { "type": "git", "url": "git+https://github.com/Qliro/QliroOne-In-App-ReactNative.git" }
 ```
 
 - **`homepage`** is the public [Qliro developer portal](https://developers.qliro.com/docs/qliro-one).
@@ -97,13 +96,31 @@ nobody triages issues.
        same address used in package.json's `author` and by the sibling iOS and Android SDK repos —
        not a monitored merchant-support mailbox. The same TODO is in SECURITY.md. -->
 
-- **`repository` is deliberately omitted.** The only repository is
-  `qliro.gitlab.host`, which is behind the corporate network. npm renders `repository` as a
-  "Repository" link on the package page and `npm repo` opens it, so declaring the internal URL would
-  put a link on a public page that 404s or hangs for every merchant who clicks it — worse than no
-  link, because it implies source they can read. Omitting the field makes npm show no repository at
-  all, which is the truthful state for a package whose source is not public. Add it only if the SDK
-  is ever mirrored to a public host, and point it at the mirror.
+- **`repository` points at the public snapshot mirror**,
+  [github.com/Qliro/QliroOne-In-App-ReactNative](https://github.com/Qliro/QliroOne-In-App-ReactNative).
+  It must never point at `qliro.gitlab.host`: that host is behind the corporate network, and a
+  repository link that 404s for every merchant is worse than none. The mirror keeps the link public
+  and feeds the supply-chain tooling (socket.dev, deps.dev, Snyk) that scores packages by their
+  repository provenance.
+
+### The snapshot mirror
+
+The GitHub mirror is **read-only distribution, not development**: development happens on
+`qliro.gitlab.host`, issues are triaged through `app@qliro.com`, and the mirror's issues and PRs are
+disabled. Its content is a source snapshot taken at each release.
+
+Pushing the snapshot is part of cutting a release. From a clean checkout of the released commit:
+
+```bash
+git clone git@github.com:Qliro/QliroOne-In-App-ReactNative.git /tmp/rn-mirror
+rsync -a --delete --exclude '.git' --exclude 'node_modules' --exclude 'example/node_modules' \
+  --exclude '.yarn' ./ /tmp/rn-mirror/
+cd /tmp/rn-mirror
+git add -A && git commit -m "Release <version>" && git tag v<version> && git push origin HEAD --tags
+```
+
+A stale mirror misleads worse than no mirror — if the push step is ever dropped, archive the GitHub
+repository with a pointer README instead of leaving it live.
 
 ## Deprecating the old package name
 

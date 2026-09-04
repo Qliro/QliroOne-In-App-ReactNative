@@ -69,6 +69,10 @@
     "email": "app@qliro.com"
   },
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qliro/QliroOne-In-App-ReactNative.git"
+  },
   "publishConfig": {
     "access": "public"
   },
