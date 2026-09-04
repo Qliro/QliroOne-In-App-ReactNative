@@ -5,18 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.23] - 2026-04-27
+## [Unreleased]
+
+### Added
+- **Transparent order process**: `onError`, `onLog`, `onStateChanged`, and `onTelemetryEvent`
+  callbacks, plus `isDebugEnabled` and `loadTimeoutMs` props — surfaced to JS on both platforms.
+- `onClosePopup` callback.
+- `additionalAllowedUrlSchemes` prop (iOS only), exposing the iOS SDK's
+  `QliroOneCheckout.additionalAllowedUrlSchemes`. The 3.0 URL hardening refuses any hand-off to a
+  scheme outside a built-in allowlist, which would otherwise leave a merchant whose payment flow
+  returns through a custom scheme with no way to permit it through this wrapper. The Android SDK has
+  no equivalent API and ignores the prop.
 
 ### Changed
+- **The version jumps to 3.0.0**, from the `0.2.0-dev` line. The React Native wrapper, the iOS SDK
+  and the Android SDK are released together as the 3.0 train and now share one version number, so a
+  merchant on `3.0.0` is on the same release across all three platforms. The jump is a renumbering,
+  not 2.x worth of intervening releases — nothing was published between `0.2.0-dev.7` and this.
+- **BREAKING — the npm package is renamed** from `qliroone_reactnative` to
+  `@qliro/react-native-qliro-one`. Update the dependency and every import; see
+  [MIGRATION.md](MIGRATION.md#breaking-change-the-package-is-renamed). The old name stays on npm at
+  `0.1.22` and is deprecated, so existing installs keep resolving. No component, prop or native
+  identifier changed — the podspec is still `QlirooneReactnative` and the Android package is still
+  `com.qliroonereactnative`.
+- SDK version reported to native is sourced solely from `package.json` and stamped into the
+  iOS/Android bridges by `scripts/sync-version.js` (runs on `prepare`). Fixes the prior drift where
+  Android reported `0.2.0` while package/iOS reported `0.2.0-dev.7`.
+- `homepage` now points at the [Qliro developer portal](https://developers.qliro.com/docs/qliro-one)
+  and `bugs` is an email address, replacing GitHub URLs for a repository that is not where this SDK
+  is developed and where nobody triages issues.
+- The native SDK pins move to the joint 3.0.0 release: `com.qliro:qliroone` 3.0.0
+  (`android/gradle.properties`) and `QliroOne` 3.0.0 (`QlirooneReactnative.podspec`, and the
+  `example/` and `qliro-one-hats` Podfiles that must match it).
+- `QlirooneReactnative.podspec`'s `s.source` no longer names the pre-rename GitHub repository. It is
+  metadata only — the pod ships inside the npm package and is resolved through autolinking by path,
+  never fetched from source.
+- `release-it` no longer attempts a GitHub release (`github.release: false`). This repository is on
+  self-hosted GitLab and has no GitHub release process, so the step could only ever fail.
+- `onShippingPriceChanged` reports `Double` prices (parity with native).
+- Android events are dispatched through the Fabric `EventDispatcher` (as `Event` instances carrying
+  the view's real `surfaceId`) instead of the legacy `RCTEventEmitter` interop shim, and the
+  ViewManager no longer exports legacy direct-event constants. The bridge no longer depends on the
+  `useFabricInterop` feature flag, which React Native turns off in strict New Architecture mode —
+  every callback was silently dropped there.
 
-- Added logging for Apple Pay merchant ID
+### Fixed
+- `excludeResultModules` now reaches the native Android SDK; it was a log-only no-op on Android
+  while iOS applied it. Unrecognized module names are dropped and reported via `onLog` (`warn`).
+- All native event payloads are validated before use (optional-chaining + early return); a
+  malformed/empty `nativeEvent` no longer crashes the merchant's checkout.
+- Native callbacks (session-expired, order-update) and the scroll throttle timer are cleaned up on
+  unmount, preventing fires into a stale native view.
+- Removed `NSLog` of the Apple Pay merchant id from the iOS bridge.
 
-## [0.1.22] - 2025-12-19
+### Known follow-ups (tracked)
+- Reconcile README references to non-existent `onLogged`/`updateOrders`.
 
-### Changed
-
-- Apple Pay merchant ID configuration via `applePayMerchantId` prop
-- Update QliroOne iOS SDK to new version with Apple Pay support.
+## [0.2.0] - 2025-12-03
+- Add support for Apple Pay
+- Update to new React Native architecture
 
 ## [0.1.21] - 2023-10-09
 

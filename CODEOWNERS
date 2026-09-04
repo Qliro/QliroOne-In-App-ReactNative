@@ -1,0 +1,39 @@
+# Code owners for the QliroOne React Native SDK.
+#
+# GitLab requires approval from a matching owner before a merge request can be merged, when the
+# target branch is protected and "require approval from code owners" is enabled on it.
+#
+# TODO(team): these are the individual maintainers of the SDK rebuild. Replace them with a GitLab
+# group handle (something like @web-app/qliro-one-sdks) once one exists and has the right members —
+# a group survives people changing teams, a list of addresses does not.
+
+* @tyler.dauria @daniel.jansson @elliot.rask @chamila.balasuriya
+
+# The public API. Every export here is merchant-facing: a changed signature or a narrowed type is a
+# breaking change for every integration.
+/src/index.tsx                  @tyler.dauria @daniel.jansson
+/src/types.ts                   @tyler.dauria @daniel.jansson
+/src/useQliroOneCheckout.ts     @tyler.dauria @daniel.jansson
+
+# The codegen spec. This file defines the Fabric component contract; a change here regenerates the
+# native interfaces on both platforms and must be matched in android/ and ios/.
+/src/QliroOneCheckoutNativeComponent.ts  @tyler.dauria @daniel.jansson
+
+# The native bridges.
+/android/                       @tyler.dauria @daniel.jansson
+/ios/                           @tyler.dauria @daniel.jansson
+
+# Packaging. A mistake here ships a broken or incomplete package to npm without failing any other
+# check: entry points, the files allowlist, peer ranges and the podspec.
+/package.json                   @tyler.dauria @daniel.jansson
+/*.podspec                      @tyler.dauria @daniel.jansson
+/.gitlab-ci.yml                 @tyler.dauria @daniel.jansson
+/scripts/                       @tyler.dauria @daniel.jansson
+
+# The Expo config plugin writes into a host app's Info.plist and entitlements.
+/app.plugin.js                  @tyler.dauria @daniel.jansson
+/plugin/                        @tyler.dauria @daniel.jansson
+
+# Security policy and licence.
+/SECURITY.md                    @tyler.dauria @daniel.jansson
+/LICENSE                        @tyler.dauria @daniel.jansson

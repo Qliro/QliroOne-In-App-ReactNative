@@ -1,0 +1,24 @@
+buildscript {
+    ext {
+        buildToolsVersion = "36.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 36
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.1.20"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // AGP is pinned instead of taking React Native's default (8.11.0) because the native
+        // Android SDK is included as a composite build and needs 8.13.0 for its publish plugin.
+        // Gradle forbids two AGP versions in one build, so both sides must agree.
+        classpath("com.android.tools.build:gradle:8.13.0")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"

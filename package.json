@@ -1,48 +1,206 @@
 {
-  "name": "qliroone_reactnative",
-  "title": "React Native Qliro One",
-  "version": "0.1.22",
+  "name": "@qliro/react-native-qliro-one",
+  "version": "3.0.0",
   "description": "This library is a QliroOne wrapper for React Native.",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "types": "./lib/typescript/commonjs/src/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.tsx",
+      "import": {
+        "source": "./src/index.tsx",
+        "types": "./lib/typescript/module/src/index.d.ts",
+        "default": "./lib/module/index.js"
+      },
+      "require": {
+        "source": "./src/index.tsx",
+        "types": "./lib/typescript/commonjs/src/index.d.ts",
+        "default": "./lib/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "files": [
-    "android",
-    "index.js",
-    "index.d.ts",
-    "ios",
+    "src",
     "lib",
-    "qliroone_reactnative.podspec"
+    "android",
+    "ios",
+    "app.plugin.js",
+    "plugin",
+    "LICENSE",
+    "*.podspec",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!android/src/test",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*",
+    "!**/example-api",
+    "!**/example",
+    "!lib/typescript/example-api/*"
   ],
   "scripts": {
-    "build": "tsc",
-    "prepare": "yarn tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/qliro/qliroone-in-app-reactNative.git",
-    "baseUrl": "https://github.com/qliro/qliroone-in-app-reactNative"
+    "example": "yarn workspace @qliro/react-native-qliro-one-example",
+    "test": "jest",
+    "typecheck": "tsc",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "version:sync": "node scripts/sync-version.js",
+    "prepare": "node scripts/sync-version.js && bob build",
+    "release": "release-it",
+    "release:dev": "release-it --preRelease=dev --npm.tag=dev --no-plugins"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "ios",
+    "android"
   ],
   "author": {
     "name": "Qliro App Team",
     "email": "app@qliro.com"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
-  "peerDependencies": {
-    "react": ">=16.8.1",
-    "react-native": ">=0.60.0-rc.0 <1.0.x"
+  "bugs": {
+    "email": "app@qliro.com"
   },
+  "homepage": "https://developers.qliro.com/docs/qliro-one",
   "devDependencies": {
-    "@react-native-community/eslint-config": "^3.0.3",
-    "@types/react": "^18.0.14",
-    "@types/react-native": "^0.69.2",
-    "eslint": "^8.19.0",
-    "react": "^16.9.0",
-    "react-native": "^0.61.5",
-    "typescript": "^4.7.4"
+    "@biomejs/biome": "^2.5.6",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@evilmartians/lefthook": "^2.1.10",
+    "@react-native-community/cli": "20.1.0",
+    "@react-native/babel-preset": "0.86.2",
+    "@react-native/jest-preset": "0.86.2",
+    "@release-it/conventional-changelog": "12",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/jest": "^29.5.14",
+    "@types/react": "^19.2.2",
+    "commitlint": "^21.2.1",
+    "del-cli": "^7.0.0",
+    "expo": "^54.0.0",
+    "jest": "^29.7.0",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "react-native-builder-bob": "^0.43.0",
+    "react-test-renderer": "19.2.3",
+    "release-it": "^21.0.0",
+    "turbo": "^2.10.7",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-native": ">=0.76.0"
+  },
+  "engines": {
+    "node": ">=20.19.4"
+  },
+  "workspaces": [
+    "example"
+  ],
+  "packageManager": "yarn@4.17.1",
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example-api/node_modules",
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/__mocks__/**",
+      "!src/QliroOneCheckoutNativeComponent.ts"
+    ],
+    "coverageReporters": [
+      "text-summary",
+      "cobertura"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 95,
+        "branches": 85,
+        "functions": 100,
+        "lines": 95
+      }
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}",
+      "requireBranch": false
+    },
+    "github": {
+      "release": false
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "angular"
+        }
+      }
+    }
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "codegenConfig": {
+    "name": "QliroOneCheckoutSpec",
+    "type": "components",
+    "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
+    "android": {
+      "javaPackageName": "com.qliroonereactnative"
+    },
+    "ios": {
+      "className": "RNQliroOneCheckout"
+    }
+  },
+  "create-react-native-library": {
+    "languages": "kotlin-objc",
+    "type": "fabric-view",
+    "version": "0.54.5"
   }
 }

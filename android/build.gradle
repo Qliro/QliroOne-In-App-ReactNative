@@ -1,76 +1,118 @@
-// android/build.gradle
+buildscript {
+  ext.getExtOrDefault = {name ->
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['QlirooneReactnative_' + name]
+  }
 
-// based on:
-//
-// * https://github.com/facebook/react-native/blob/0.60-stable/template/android/build.gradle
-//   previous location:
-//   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/build.gradle
-//
-// * https://github.com/facebook/react-native/blob/0.60-stable/template/android/app/build.gradle
-//   previous location:
-//   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/app/build.gradle
+  repositories {
+    google()
+    mavenCentral()
+  }
 
-// These defaults should reflect the SDK versions used by
-// the minimum React Native version supported.
-def DEFAULT_COMPILE_SDK_VERSION = 28
-def DEFAULT_BUILD_TOOLS_VERSION = '28.0.3'
-def DEFAULT_MIN_SDK_VERSION = 16
-def DEFAULT_TARGET_SDK_VERSION = 28
-
-def safeExtGet(prop, fallback) {
-    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+  dependencies {
+    // Must match the consuming app's AGP. A mismatch (e.g. 8.7.2 vs the app's 8.12.x) makes the
+    // library expose variants under a different AgpVersionAttr/attribute schema, so the app
+    // resolves "no variants". The default is what a stock React Native 0.86 app resolves, since
+    // react-native-gradle-plugin brings AGP itself. Consumers override via the `agpVersion` ext —
+    // example/android does, because the native Android SDK's publish plugin needs 8.13.0.
+    classpath "com.android.tools.build:gradle:${getExtOrDefault('agpVersion') ?: '8.12.0'}"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
+  }
 }
 
-apply plugin: 'com.android.library'
 
-buildscript {
-    // The Android Gradle plugin is only required when opening the android folder stand-alone.
-    // This avoids unnecessary downloads and potential conflicts when the library is included as a
-    // module dependency in an application project.
-    // ref: https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:build_script_external_dependencies
-    if (project == rootProject) {
-        repositories {
-            google()
-        }
-        dependencies {
-            // This should reflect the Gradle plugin version used by
-            // the minimum React Native version supported.
-            classpath 'com.android.tools.build:gradle:3.4.1'
-        }
-    }
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "com.facebook.react"
+
+def getExtOrIntegerDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["QlirooneReactnative_" + name]).toInteger()
 }
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
-    buildToolsVersion safeExtGet('buildToolsVersion', DEFAULT_BUILD_TOOLS_VERSION)
-    defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
-        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
-        versionCode 1
-        versionName "1.0"
+  namespace "com.qliroonereactnative"
+
+  compileSdk getExtOrIntegerDefault("compileSdkVersion")
+
+  defaultConfig {
+    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+  }
+
+  buildFeatures {
+    buildConfig true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
     }
-    lintOptions {
-        abortOnError false
+  }
+
+  lint {
+    disable "GradleCompatible"
+  }
+
+  // React Native 0.81 apps build on JDK 17, and the native SDK (../qliro-one-android) already
+  // targets 17. Keeping this at 1.8 only risks a jvmTarget mismatch between the Java and Kotlin
+  // compilers, which surfaces as an "Inconsistent JVM-target compatibility" failure in the app.
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  kotlinOptions {
+    jvmTarget = "17"
+  }
+
+  // Codegen writes here because package.json sets codegenConfig.outputDir (the recommended layout
+  // for libraries since RN 0.80); .gitignore and biome.json exclude the directory to match.
+  sourceSets {
+    main {
+      java.srcDirs += [
+        "generated/java",
+        "generated/jni"
+      ]
     }
+  }
+
+  testOptions {
+    unitTests {
+      // Robolectric needs the library's merged resources, assets and manifest to build its runtime.
+      includeAndroidResources = true
+    }
+  }
 }
 
 repositories {
-    // ref: https://www.baeldung.com/maven-local-repository
-    mavenLocal()
-    maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url "$rootDir/../node_modules/react-native/android"
-    }
-    maven {
-        // Android JSC is installed from npm
-        url "$rootDir/../node_modules/jsc-android/dist"
-    }
-    google()
+  mavenLocal()
+  mavenCentral()
+  google()
 }
 
+def kotlin_version = getExtOrDefault("kotlinVersion")
+
 dependencies {
-    //noinspection GradleDynamicVersion
-    implementation 'com.facebook.react:react-native:+'  // From node_modules
-    implementation 'com.qliro:qliroone:2.2.8'
-    implementation 'com.google.code.gson:gson:2.8.5'
+  implementation "com.facebook.react:react-android"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  // Must track the published native Android SDK version. Declared in gradle.properties
+  // (QlirooneReactnative_qliroOneVersion) and overridable via the `qliroOneVersion` ext so a
+  // consuming app — or CI building against an unreleased native SDK — can point at another build.
+  //
+  // Never pin back to the bare `3.0.0-dev` coordinate: Maven Central holds an early snapshot under
+  // that exact version whose QliroOneListener still uses the Int onShippingPriceChanged signature
+  // and has no onClosePopup. Gradle caches static versions permanently, so that stale copy wins
+  // over any newer same-version build in mavenLocal and the module fails to compile.
+  //
+  // In-repo host apps (example/, ../../qliro-one-hats) never resolve this coordinate: their
+  // settings.gradle includes ../qliro-one-android as a composite build and substitutes it with
+  // project(':qliroone'), so the version here only affects external consumers.
+  implementation "com.qliro:qliroone:${getExtOrDefault('qliroOneVersion')}"
+
+  // Mirrors the native SDK's own unit-test stack (../qliro-one-android/qliroone/build.gradle).
+  // The bridge's view is a LinearLayout wrapping the SDK's WebView, so the tests need Robolectric
+  // to get a real Android runtime and the WebView shadow that records evaluated JavaScript. The
+  // SDK level is pinned in src/test/resources/robolectric.properties.
+  testImplementation "junit:junit:4.13.2"
+  testImplementation "org.robolectric:robolectric:4.16.1"
+  testImplementation "androidx.test:core:1.6.1"
 }

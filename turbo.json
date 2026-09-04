@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".nvmrc", ".yarnrc.yml"],
+  "globalEnv": ["NODE_ENV"],
+  "tasks": {
+    "build:android": {
+      "env": ["ANDROID_HOME", "ORG_GRADLE_PROJECT_newArchEnabled"],
+      // turbo runs tasks in strict env mode, so a variable it is not told about is simply absent
+      // from the task's environment. `./gradlew` finds its JDK through JAVA_HOME, and the mac CI
+      // runner has no `java` on PATH to fall back to, so without this the build dies on
+      // "Unable to locate a Java Runtime". Not in `env` above: the JDK location is a property of
+      // the machine, not an input that should change the cache key.
+      "passThroughEnv": ["JAVA_HOME", "ANDROID_SDK_ROOT"],
+      "inputs": [
+        "package.json",
+        "android",
+        "!android/build",
+        "src/*.ts",
+        "src/*.tsx",
+        "example/package.json",
+        "example/android",
+        "!example/android/.gradle",
+        "!example/android/build",
+        "!example/android/app/build"
+      ],
+      "outputs": []
+    },
+    "build:ios": {
+      "env": [
+        "RCT_NEW_ARCH_ENABLED",
+        "RCT_USE_RN_DEP",
+        "RCT_USE_PREBUILT_RNCORE"
+      ],
+      "inputs": [
+        "package.json",
+        "*.podspec",
+        "ios",
+        "src/*.ts",
+        "src/*.tsx",
+        "example/package.json",
+        "example/ios",
+        "!example/ios/build",
+        "!example/ios/Pods"
+      ],
+      "outputs": []
+    }
+  }
+}

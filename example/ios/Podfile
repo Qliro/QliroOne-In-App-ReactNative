@@ -1,0 +1,57 @@
+# Resolve react_native_pods.rb with node, so it is found through the workspace hoisting rather than
+# a fixed relative path.
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, min_ios_version_supported
+install! 'cocoapods', :deterministic_uuids => false
+
+# Required from React Native 0.86: this is what installs the codegen hooks. Without it the codegen
+# only ran for this repo's own codegenConfig, and every autolinked Fabric component compiled against
+# headers nobody generated — react-native-safe-area-context failed with
+# "'react/renderer/components/safeareacontext/Props.h' file not found".
+prepare_react_native_project!
+
+target 'QlirooneReactnativeExample' do
+  # Autolinking, which is also what registers third-party libraries for codegen. It picks up this
+  # repo's own library through example/react-native.config.js, so neither it nor
+  # react-native-safe-area-context is declared by hand any more.
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  # External dependency, not autolinked. For local testing against unreleased SDK changes, point
+  # this at the locally-built xcframework via a path podspec, e.g.:
+  #   pod 'QliroOne', :path => '../../../qliro-one-ios/rn-binary-pod'
+  # (after running qliro-one-ios/create_xcframework.sh). Otherwise use the published version.
+  #
+  # Must match the QliroOne version QlirooneReactnative.podspec depends on. NOTE: `pod install`
+  # cannot resolve this until QliroOne 3.0.0 is live on the CocoaPods trunk; until then it fails
+  # with "cannot find compatible versions for pod QliroOne", which is expected.
+  pod 'QliroOne', '3.0.0'
+  # Additional React Native dependencies
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+  pod 'SocketRocket', '~> 0.7.1'
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false
+    )
+
+    # QliroOne still ships with a deployment target below what React Native 0.86 requires, so pin
+    # every pod to the app's minimum rather than letting the lowest one win.
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |build_config|
+        build_config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = min_ios_version_supported
+      end
+    end
+  end
+end

@@ -1,0 +1,37 @@
+pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
+plugins { id("com.facebook.react.settings") }
+
+// The autolinking config is produced by running a command and capturing its stdout into
+// build/generated/autolinking/autolinking.json. The default command is
+// `npx @react-native-community/cli config`, and npm's npx does not resolve that package name to a
+// binary inside this yarn workspace — it looks for a *script* by that name and prints
+//
+//     npm error Lifecycle script `@react-native-community/cli` failed with error:
+//     npm error Error: Missing script: "@react-native-community/cli"
+//
+// on stdout, which lands in autolinking.json and fails the build with "Could not parse autolinking
+// config file". It survives locally only because the plugin skips the command whenever a valid
+// autolinking.json is already cached, so a clean checkout (CI) is where it shows up.
+//
+// Call the CLI entry point directly: no package manager in the loop, and the output is identical.
+def reactNativeCli = file('../node_modules/react-native/cli.js')
+if (!reactNativeCli.exists()) {
+    // yarn hoisted the workspace's copy to the repo root.
+    reactNativeCli = file('../../node_modules/react-native/cli.js')
+}
+extensions.configure(com.facebook.react.ReactSettingsExtension){ ex ->
+    ex.autolinkLibrariesFromCommand(['node', reactNativeCli.absolutePath, 'config'])
+}
+rootProject.name = 'qliroonereactnative.example'
+include ':app'
+includeBuild('../node_modules/@react-native/gradle-plugin')
+
+// @qliro/react-native-qliro-one depends on com.qliro:qliroone. Build that native SDK from source in the
+// sibling repo instead of resolving a published artifact, so this app needs no prior
+// `publishToMavenLocal` and no version pin to chase. Substitution covers the whole build, so the
+// RN module picks it up too.
+includeBuild('../../../qliro-one-android') {
+    dependencySubstitution {
+        substitute module('com.qliro:qliroone') using project(':qliroone')
+    }
+}
