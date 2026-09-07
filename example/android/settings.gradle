@@ -26,12 +26,18 @@ rootProject.name = 'qliroonereactnative.example'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
 
-// @qliro/react-native-qliro-one depends on com.qliro:qliroone. Build that native SDK from source in the
-// sibling repo instead of resolving a published artifact, so this app needs no prior
-// `publishToMavenLocal` and no version pin to chase. Substitution covers the whole build, so the
-// RN module picks it up too.
-includeBuild('../../../qliro-one-android') {
-    dependencySubstitution {
-        substitute module('com.qliro:qliroone') using project(':qliroone')
+// @qliro/react-native-qliro-one depends on com.qliro:qliroone. By default, build that native SDK
+// from source in the sibling repo instead of resolving a published artifact, so this app needs no
+// prior `publishToMavenLocal` and no version pin to chase. Substitution covers the whole build, so
+// the RN module picks it up too.
+//
+// Pass -PqliroUseLocalSdk=false to skip the substitution and resolve the *published* pin
+// (QlirooneReactnative_qliroOneVersion in ../../android/gradle.properties) instead — the merchant
+// resolution path, used to verify a published artifact end to end before merchants get it.
+if ((providers.gradleProperty('qliroUseLocalSdk').getOrNull() ?: 'true') != 'false') {
+    includeBuild('../../../qliro-one-android') {
+        dependencySubstitution {
+            substitute module('com.qliro:qliroone') using project(':qliroone')
+        }
     }
 }

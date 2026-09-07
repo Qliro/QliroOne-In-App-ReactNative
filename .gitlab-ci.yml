@@ -386,6 +386,11 @@ build-ios:
     LC_ALL: en_US.UTF-8
   script:
     - cd example
+    # The "i18n 1.15.2 has been removed" resolution failures were the runner's DEFAULT ruby: 2.7.4
+    # (EOL), whose rubygems filters out gems requiring ruby >= 3.2 as if they did not exist. The
+    # repo-root .ruby-version pins 3.3.9 (same as the iOS repo; rbenv on the box provides it) —
+    # print what we actually got, and keep bundler current inside that ruby.
+    - 'ruby -v; gem install bundler --no-document'
     - bundle config set --local path vendor/bundle
     - bundle install
     - bundle exec pod install --project-directory=ios

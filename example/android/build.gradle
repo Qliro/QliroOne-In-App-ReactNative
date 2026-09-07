@@ -22,3 +22,14 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+// The Central Portal snapshot repository, for building against a pre-release native SDK
+// (-PqliroUseLocalSdk=false with a -SNAPSHOT pin in ../../android/gradle.properties). Repositories
+// declared inside a library module do not apply to the app's own dependency resolution, so this
+// must live at the app level — a merchant testing a dev build adds the same block. Appended after
+// google()/mavenCentral(), so release builds never query it.
+allprojects {
+    repositories {
+        maven { url "https://central.sonatype.com/repository/maven-snapshots/" }
+    }
+}

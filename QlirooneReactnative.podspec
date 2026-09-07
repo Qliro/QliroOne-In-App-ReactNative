@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.private_header_files = "ios/**/*.h"
 
 
-  s.dependency "QliroOne", "3.0.0"
+  s.dependency "QliroOne", "3.0.0-rc.5"
   s.pod_target_xcconfig = {
   'DEFINES_MODULE' => 'YES',
   'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES'

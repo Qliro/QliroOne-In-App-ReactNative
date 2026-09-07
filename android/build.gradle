@@ -88,9 +88,10 @@ repositories {
   mavenCentral()
   google()
   // Resolves the native SDK while its pin is a -SNAPSHOT (pre-release testing): Central's snapshot
-  // repository is separate from Maven Central proper. Declared here, guarded by the pin, so a
-  // merchant testing a dev build needs no repository configuration of their own — and a release
-  // pin never touches the snapshot repo.
+  // repository is separate from Maven Central proper. This covers only this module's own
+  // resolution — Gradle does not propagate a library's repositories to the consuming app, so an
+  // app building against a -SNAPSHOT pin must declare the same repository itself (see the example
+  // app's root build.gradle). Guarded by the pin, so a release pin never touches the snapshot repo.
   if (getExtOrDefault('qliroOneVersion').endsWith('-SNAPSHOT')) {
     maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
   }

@@ -34,7 +34,7 @@ target 'QlirooneReactnativeExample' do
   # Must match the QliroOne version QlirooneReactnative.podspec depends on. NOTE: `pod install`
   # cannot resolve this until QliroOne 3.0.0 is live on the CocoaPods trunk; until then it fails
   # with "cannot find compatible versions for pod QliroOne", which is expected.
-  pod 'QliroOne', '3.0.0'
+  pod 'QliroOne', '3.0.0-rc.5'
   # Additional React Native dependencies
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
   pod 'SocketRocket', '~> 0.7.1'
